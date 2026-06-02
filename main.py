@@ -1,20 +1,33 @@
 import sys
 import pandas as pd
-from cmdline import print_comparison, print_dashboard, print_banner, get_prompt
+from cmdline import (
+    print_abilities,
+    print_comparison,
+    print_dashboard,
+    print_banner,
+    get_prompt,
+    print_ability_info,
+)
 from enum import Enum
 from pathlib import Path
 
-CSV_PATH = r"./pokemon_complete_2025.csv"
+CSV_PATH = "./pokemon_complete_2025.csv"
+ABILITIES_CSV_PATH = "./abilities.csv"
 BASE_IMAGES_PATH = Path.home() / "pokedex-cli/pokemon-images/thumbnails/"
 
 df = pd.read_csv(CSV_PATH)
+abilities_df = pd.read_csv(ABILITIES_CSV_PATH)[:311]
+
 pokemon_names = df["name"].to_list()
+ABILITIES = abilities_df["name"].to_list()  # type: ignore
 
 
 class Action(Enum):
     GET_INFO = "/info"
     GET_INFO_BY_ID = "/info-id"
     COMPARE = "/cmp"
+    LIST_ALL_ABILITIES = "/abilities"
+    GET_ABILITY_INFO = "/ability"
 
 
 def repl() -> None:
@@ -28,6 +41,9 @@ def repl() -> None:
 
         match cmd:
             case Action.GET_INFO.value:
+                if len(rem) == 0:
+                    print("Please specify pokemon(s) name(s)")
+                    continue
                 invalid_names = {name for name in rem if name not in pokemon_names}
                 valid = set(rem) - invalid_names
                 if len(valid) == 0:
@@ -64,6 +80,26 @@ def repl() -> None:
                 print_comparison(a_info, b_info)
 
                 print(f"Comparing: {pokemon_a} Vs {pokemon_b}")
+            case Action.LIST_ALL_ABILITIES.value:
+                abilities = abilities_df[["id", "name"]].to_dict(orient="records")  # type: ignore
+                print_abilities(abilities)
+            case Action.GET_ABILITY_INFO.value:
+                if len(rem) == 0:
+                    print("Please specify ability.")
+                    continue
+                if len(rem) > 1:
+                    print("You can only view info for one ability at a time.")
+                    continue
+                ability = rem[0]
+                if ability not in ABILITIES:
+                    print(f"Invalid ability: {ability}")
+                    continue
+                have_ability = df.query(
+                    "ability_1 == @ability or ability_2 == @ability or hidden_ability == @ability"
+                )["name"].to_dict()
+
+                ability_entry = abilities_df.query("name == @ability").iloc[0].to_dict()
+                print_ability_info(ability_entry, have_ability)
             case _:
                 print(f"Invalid command: {cmd}")
 

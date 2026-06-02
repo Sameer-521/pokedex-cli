@@ -195,3 +195,66 @@ def print_comparison(pokemon_a_info: dict, pokemon_b_info: dict) -> None:
         table.add_row(stat_name, cell_a, cell_b)
 
     console.print(table)
+
+
+def print_abilities(abilities: list[dict]) -> None:
+    rows_per_col = 60
+    num_cols = 6
+
+    table = Table(
+        title="[bold]ABILITIES[/bold]",
+        expand=False,
+    )
+
+    for c in range(num_cols):
+        start_id = c * rows_per_col + 1
+        end_id = (c + 1) * rows_per_col
+        table.add_column(f"[bold]{start_id}-{end_id}[/bold]", no_wrap=True, width=20)
+
+    for r in range(rows_per_col):
+        row_cells = []
+        for c in range(num_cols):
+            idx = c * rows_per_col + r
+            if idx < len(abilities):
+                entry = abilities[idx]
+                row_cells.append(f"{entry['id']} {entry['name']}")
+            else:
+                row_cells.append("")
+        table.add_row(*row_cells)
+
+    console.print(table)
+
+
+def print_ability_info(ability: dict, have_ability: dict) -> None:
+    id = ability.get("id", "???")
+    raw_name = ability.get("name", "???")
+    name = raw_name.replace("-", " ").title()
+    desc = ability.get("description", "???")
+
+    pokemon_names = list(have_ability.values())
+    count = len(pokemon_names)
+
+    grid_cols = 3
+    pokemon_grid = Table(expand=False, show_header=False, padding=(0, 2))
+    for _ in range(grid_cols):
+        pokemon_grid.add_column(no_wrap=True)
+
+    for i in range(0, len(pokemon_names), grid_cols):
+        chunk = pokemon_names[i : i + grid_cols]
+        row = [n.replace("-", " ").title() for n in chunk]
+        while len(row) < grid_cols:
+            row.append("")
+        pokemon_grid.add_row(*row)
+
+    content = Table.grid(padding=(0, 1))
+    content.add_column()
+    content.add_row(Text.from_markup(f"[italic]{desc}[/italic]"))
+    content.add_row(Text(f"\nPokémon with this ability ({count} total):", style="bold"))
+    content.add_row(pokemon_grid)
+
+    panel = Panel(
+        content,
+        title=f"[bold]ABILITY: {id} — {name}[/bold]",
+        expand=False,
+    )
+    console.print(panel)
