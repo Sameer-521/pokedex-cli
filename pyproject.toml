@@ -9,4 +9,5 @@ dependencies = [
     "httpx>=0.28.0",
     "plotext>=5.0.0",
     "rich>=13.0.0",
+    "pillow",
 ]

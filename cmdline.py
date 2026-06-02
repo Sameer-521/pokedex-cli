@@ -68,8 +68,14 @@ def generate_image_widget(image_path: Path, width: int = WIDTH) -> Text:
     try:
         plt.image_plot(image_path)
         return Text.from_ansi(plt.build())
-    except Exception:
-        return Text("[red]Image File Not Found[/red]")
+    except ModuleNotFoundError:
+        console.print("[yellow]Warning:[/yellow] Pillow is not installed")
+        return Text("[red]Pillow not installed. Run: pip install pillow[/red]")
+    except FileNotFoundError:
+        return Text(f"[red]Image not found: {image_path.name}[/red]")
+    except Exception as e:
+        console.print(f"[red]Error in {generate_image_widget.__name__}:[/red] {e}")
+        return Text(f"[red]Failed to load image: {e}[/red]")
 
 
 def extract_extra_text(poke_data: dict) -> str:

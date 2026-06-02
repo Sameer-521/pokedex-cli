@@ -59,17 +59,24 @@ def repl() -> None:
                     print_dashboard(img_path.absolute(), pokemon_info)
 
             case Action.GET_INFO_BY_ID.value:
-                valid_ids = {id for id in rem if (int(id) > 0) and (int(id) <= 1025)}
+                try:
+                    valid_ids = {
+                        id for id in rem if (int(id) > 0) and (int(id) <= 1025)
+                    }
+                except ValueError as e:
+                    print(f"Error: {e}")
+                    continue
+
                 invalid = set(rem) - valid_ids
 
                 for id in valid_ids:
                     matching_entry = df.query(f"pokedex_id == {id}")
                     pokemon_info = matching_entry.iloc[0].to_dict()
-                    print(pokemon_info)
                     img_path = BASE_IMAGES_PATH / (id.zfill(4) + ".png")
-                    print_dashboard(img_path.absolute(), pokemon_info)
+                    print_dashboard(img_path, pokemon_info)
 
-                print(f"Invalid IDs: {invalid}")
+                if invalid:
+                    print(f"Invalid IDs: {invalid}")
             case Action.COMPARE.value:
                 if len(rem) != 2:
                     print("You can only compare two pokemons at a time")
