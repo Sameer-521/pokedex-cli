@@ -75,8 +75,10 @@ def print_dashboard(img_path: Path | None, info: dict = dict()):
         pokemon_name = "Unknown"
         poke_data = {}
     else:
-        # Extracts 'charizard' and its nested stats dict from the provided format
-        pokemon_name, poke_data = list(info.items())[0]
+        pokemon_name = info["name"]
+        poke_data = info
+        for key, val in poke_data.items():
+            poke_data[key] = str(val)
 
     image_string = generate_image_widget(img_path, width=WIDTH)
 

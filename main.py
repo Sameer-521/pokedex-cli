@@ -1,11 +1,15 @@
 import csv
 import sys
+import pandas as pd
 from helper import print_dashboard, validate_pokedex_info, print_banner, get_prompt
 from enum import Enum
 from pathlib import Path
 
 CSV_PATH = r"./pokemon_complete_2025.csv"
 BASE_IMAGES_PATH = Path.home() / "pokedex-cli/pokemon-images/thumbnails/"
+
+df = pd.read_csv(CSV_PATH)
+pokemon_names = df["name"].to_list()
 
 
 class Action(Enum):
@@ -14,19 +18,7 @@ class Action(Enum):
     COMPARE = "/cmp"
 
 
-def load_pokemon_data() -> dict:
-    data = dict()
-    with open(CSV_PATH, mode="r", encoding="utf-8") as file:
-        reader = csv.DictReader(file)
-        for row in reader:
-            key = row.pop("name")
-            data[key] = row
-
-    return data
-
-
 def repl() -> None:
-    poke_data = load_pokemon_data()
     while True:
         text = get_prompt()
         if text == "":
@@ -37,31 +29,32 @@ def repl() -> None:
 
         match cmd:
             case Action.GET_INFO.value:
-                info_gotten = []
-                invalid_names = []
-                for name in rem:
-                    entry: dict = poke_data.get(name, {})
-                    entry = {name: entry}
-                    valid, err = validate_pokedex_info(entry)
-                    if valid and not err:
-                        info_gotten.append(f"Info: {name}: {entry}")
-                        img_path = BASE_IMAGES_PATH / (
-                            str(entry[name].get("pokedex_id")).zfill(4) + ".png"
-                        )
-                        print_dashboard(img_path.absolute(), entry)
-                    else:
-                        invalid_names.append(f"{name}: {err}")
-                print(info_gotten)
-                if invalid_names:
+                invalid_names = {name for name in rem if name not in pokemon_names}
+                valid = set(rem) - invalid_names
+                if len(valid) == 0:
                     print(f"Invalid names: {invalid_names}")
+                    continue
+                for name in valid:  # pandas will look for this variable
+                    matching_entry = df.query("name == @name")
+                    pokemon_info = matching_entry.iloc[0].to_dict()
+                    print(pokemon_info)
+                    img_path = BASE_IMAGES_PATH / (
+                        str(pokemon_info["pokedex_id"]).zfill(4) + ".png"
+                    )
+                    print_dashboard(img_path.absolute(), pokemon_info)
+
             case Action.GET_INFO_BY_ID.value:
                 valid_ids = {id for id in rem if (int(id) > 0) and (int(id) <= 1025)}
                 invalid = set(rem) - valid_ids
 
-                for item in poke_data:
-                    for id in valid_ids:
-                        if item.get("pokedex_id", None) == id:
-                            pass
+                for id in valid_ids:
+                    matching_entry = df.query(f"pokedex_id == {id}")
+                    pokemon_info = matching_entry.iloc[0].to_dict()
+                    print(pokemon_info)
+                    img_path = BASE_IMAGES_PATH / (id.zfill(4) + ".png")
+                    print_dashboard(img_path.absolute(), pokemon_info)
+
+                print(f"Invalid IDs: {invalid}")
             case Action.COMPARE.value:
                 if len(rem) != 2:
                     print("You can only compare two pokemons at a time")
