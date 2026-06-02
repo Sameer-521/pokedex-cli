@@ -1,5 +1,4 @@
 import plotext as plt
-from rich.markdown import Markdown
 from pathlib import Path
 from rich.console import Console
 from rich.panel import Panel
@@ -30,6 +29,14 @@ def get_prompt() -> str:
     return text
 
 
+def cast_to_str(poke_data: dict) -> dict:
+    """Cast the dict values to str type"""
+    for key, val in poke_data.items():
+        poke_data[key] = str(val)
+
+    return poke_data
+
+
 def generate_progress_bar(ratio: float, width: int = 20) -> str:
     """
     Generates an ANSI block progress bar string.
@@ -46,8 +53,7 @@ def generate_progress_bar(ratio: float, width: int = 20) -> str:
 
     # ANSI Block characters
     full_block = "█"
-    empty_block = "░"  # You can also use "▒" or a simple space " "
-
+    empty_block = "░"
     # Construct the bar
     bar = (full_block * filled_length) + (empty_block * (width - filled_length))
 
@@ -66,25 +72,7 @@ def generate_image_widget(image_path: Path, width: int = WIDTH) -> Text:
         return Text("[red]Image File Not Found[/red]")
 
 
-def print_dashboard(img_path: Path | None, info: dict = dict()):
-    if img_path is None:
-        raise ValueError("argument `img_path` needs to be supplied")
-
-    # Safely extract the pokemon name and data dictionary
-    if not info:
-        pokemon_name = "Unknown"
-        poke_data = {}
-    else:
-        pokemon_name = info["name"]
-        poke_data = info
-        for key, val in poke_data.items():
-            poke_data[key] = str(val)
-
-    image_string = generate_image_widget(img_path, width=WIDTH)
-
-    image_panel = Panel(
-        image_string, title=f"[green]{pokemon_name.upper()}[/green]", expand=False
-    )
+def extract_extra_text(poke_data: dict) -> str:
 
     # Helper function to scale stats for the progress bar (max base stat roughly 160)
     def get_stat_bar(stat_key, max_val=160):
@@ -117,6 +105,28 @@ def print_dashboard(img_path: Path | None, info: dict = dict()):
         f'[italic]"{poke_data.get("description", "No data available.")}"[/italic]'
     )
 
+    return extra_text
+
+
+def print_dashboard(img_path: Path | None, info: dict) -> None:
+    if img_path is None:
+        raise ValueError("argument `img_path` needs to be supplied")
+
+    # Safely extract the pokemon name and data dictionary
+    if not info:
+        pokemon_name = "Unknown"
+        poke_data = {}
+    else:
+        pokemon_name = info["name"]
+        poke_data = cast_to_str(info)
+
+    image_string = generate_image_widget(img_path, width=WIDTH)
+
+    image_panel = Panel(
+        image_string, title=f"[green]{pokemon_name.upper()}[/green]", expand=False
+    )
+
+    extra_text = extract_extra_text(poke_data)
     data_panel = Panel(extra_text, title="[blue]Pokédex Data[/blue]", expand=True)
 
     # invisible Rich Table to layout widgets side-by-side
@@ -129,82 +139,59 @@ def print_dashboard(img_path: Path | None, info: dict = dict()):
     console.print(layout_table)
 
 
-def validate_pokedex_info(info: dict) -> tuple[bool, list[str]]:
-    """
-    Validates that the provided Pokémon info dictionary contains all required fields.
+def print_comparison(pokemon_a_info: dict, pokemon_b_info: dict) -> None:
+    pokemon_a_info = cast_to_str(pokemon_a_info)
+    pokemon_b_info = cast_to_str(pokemon_b_info)
 
-    Returns:
-        A tuple of (is_valid, missing_fields)
-    """
-    # Define the canonical list of fields based on the expected output schema
-    REQUIRED_FIELDS = [
-        "pokedex_id",
-        "genus",
-        "generation",
-        "type_1",
-        "type_2",
-        "num_types",
-        "hp",
-        "attack",
-        "defense",
-        "sp_attack",
-        "sp_defense",
-        "speed",
-        "base_stat_total",
-        "height_m",
-        "weight_kg",
-        "base_experience",
-        "ability_1",
-        "ability_2",
-        "hidden_ability",
-        "color",
-        "shape",
-        "habitat",
-        "growth_rate",
-        "egg_groups",
-        "is_legendary",
-        "is_mythical",
-        "is_baby",
-        "capture_rate",
-        "base_happiness",
-        "hatch_counter",
-        "gender_rate",
-        "description",
-        "sprite_url",
-        "is_dual_type",
-        "bmi",
-        "attack_defense_ratio",
-        "physical_total",
-        "special_total",
-        "offensive_total",
-        "defensive_total",
-        "gender_distribution",
-        "stat_tier",
+    name_a = pokemon_a_info["name"].upper()
+    name_b = pokemon_b_info["name"].upper()
+
+    stats = [
+        ("HP", "hp"),
+        ("Attack", "attack"),
+        ("Defense", "defense"),
+        ("Sp. Atk", "sp_attack"),
+        ("Sp. Def", "sp_defense"),
+        ("Speed", "speed"),
     ]
 
-    # 1. Ensure the dictionary isn't completely empty
-    if not info:
-        return False, ["Entire dataset is missing or empty"]
+    max_val = 160
 
-    # 2. Extract the inner stats dictionary (e.g., info['charizard'])
-    try:
-        pokemon_name = list(info.keys())[0]
-        poke_data = info[pokemon_name]
+    table = Table(
+        title=f"[bold]{name_a}[/bold] vs [bold]{name_b}[/bold]",
+        expand=False,
+    )
+    table.add_column("Stat", style="bold", no_wrap=True)
+    table.add_column(name_a, no_wrap=True, width=50)
+    table.add_column(name_b, no_wrap=True, width=50)
 
-        # Ensure poke_data is actually a dictionary
-        if not isinstance(poke_data, dict):
-            return False, ["Data payload format is invalid (expected a nested dict)"]
+    for stat_name, stat_key in stats:
+        val_a = float(pokemon_a_info.get(stat_key, 0))
+        val_b = float(pokemon_b_info.get(stat_key, 0))
 
-    except IndexError, AttributeError:
-        return False, ["Invalid dictionary structural format"]
+        ratio_a = min(max(val_a / max_val, 0.0), 1.0)
+        ratio_b = min(max(val_b / max_val, 0.0), 1.0)
 
-    # 3. Identify any missing fields
-    missing_fields = [field for field in REQUIRED_FIELDS if field not in poke_data]
+        bar_a = generate_progress_bar(ratio_a)
+        bar_b = generate_progress_bar(ratio_b)
 
-    # 4. Return results
-    is_valid = len(missing_fields) == 0
-    return is_valid, missing_fields
+        diff_a = int(val_a - val_b)
+        diff_b = int(val_b - val_a)
 
+        if val_a > val_b:
+            cell_a = (
+                f"{int(val_a)} [green]{bar_a}[/green] [green]({diff_a:+d})[/green]\n"
+            )
+            cell_b = f"{int(val_b)} [red]{bar_b}[/red] [red]({diff_b:+d})[/red]\n"
+        elif val_b > val_a:
+            cell_a = f"{int(val_a)} [red]{bar_a}[/red] [red]({diff_a:+d})[/red]\n"
+            cell_b = (
+                f"{int(val_b)} [green]{bar_b}[/green] [green]({diff_b:+d})[/green]\n"
+            )
+        else:
+            cell_a = f"{int(val_a)} {bar_a} (=)\n"
+            cell_b = f"{int(val_b)} {bar_b} (=)\n"
 
-if __name__ == "__main__":
-    print_dashboard(None, {})
+        table.add_row(stat_name, cell_a, cell_b)
+
+    console.print(table)

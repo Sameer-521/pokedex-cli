@@ -1,7 +1,6 @@
-import csv
 import sys
 import pandas as pd
-from helper import print_dashboard, validate_pokedex_info, print_banner, get_prompt
+from cmdline import print_comparison, print_dashboard, print_banner, get_prompt
 from enum import Enum
 from pathlib import Path
 
@@ -60,6 +59,10 @@ def repl() -> None:
                     print("You can only compare two pokemons at a time")
                     continue
                 pokemon_a, pokemon_b = rem
+                a_info = df.query("name == @pokemon_a").iloc[0].to_dict()
+                b_info = df.query("name == @pokemon_b").iloc[0].to_dict()
+                print_comparison(a_info, b_info)
+
                 print(f"Comparing: {pokemon_a} Vs {pokemon_b}")
             case _:
                 print(f"Invalid command: {cmd}")
