@@ -1,4 +1,6 @@
 import plotext as plt
+from PIL import Image
+from rich_pixels import Pixels
 from pathlib import Path
 from rich.console import Console
 from rich.panel import Panel
@@ -7,6 +9,7 @@ from rich.text import Text
 
 console = Console()
 WIDTH = 50
+IMG_SIZE = (42, 42)
 PROMPT = "[bold red]POK[/bold red][bold orange3]é[/bold orange3][bold yellow]DEX[/bold yellow] [bold grey50]>[/bold grey50][bold white]>[/bold white] "
 banner_text = (
     "[bold red] _____   ____  _  __    _____  ________   __   _____ _      _____ [/bold red]\n"
@@ -17,6 +20,10 @@ banner_text = (
     "[bold white]|_|     \\____/|_|\\_\\___|_____/|______/_/ \\_\\  \\_____|______|_____|[/bold white]\n"
     "[bold grey50]                                    (POK[/bold grey50][bold red]é[/bold red][bold grey50]DEX)[/bold grey50]\n"
     "       [bold cyan]⚡ SYSTEM READY // VERSION 2026 ⚡[/bold cyan]\n"
+)
+
+UNAVAILABLE = (
+    "██████╗\n ██╔═══██╗\n ╚═╝  ██╔╝\n    ██╔═╝\n   ██╔╝\n   ╚═╝\n\n   ██╗\n   ╚═╝"
 )
 
 
@@ -61,21 +68,23 @@ def generate_progress_bar(ratio: float, width: int = 20) -> str:
     return f"|{bar}|"
 
 
-def generate_image_widget(image_path: Path, width: int = WIDTH) -> Text:
+def generate_image_widget(image_path: Path, img_size: tuple = IMG_SIZE) -> Pixels:
     """Generates the high-density Braille string from Plotext."""
-    plt.clf()
-    plt.plotsize(width, int(width / 2))
     try:
         plt.image_plot(image_path)
-        return Text.from_ansi(plt.build())
+        img = Image.open(image_path).resize(img_size)
+        pixels = Pixels.from_image(img)
+
+        return pixels
     except ModuleNotFoundError:
         console.print("[yellow]Warning:[/yellow] Pillow is not installed")
-        return Text("[red]Pillow not installed. Run: pip install pillow[/red]")
+        return Pixels.from_ascii((UNAVAILABLE))
     except FileNotFoundError:
-        return Text(f"[red]Image not found: {image_path.name}[/red]")
+        console.print("[yellow]Warning:[/yellow] Image file not found")
+        return Pixels.from_ascii((UNAVAILABLE))
     except Exception as e:
         console.print(f"[red]Error in {generate_image_widget.__name__}:[/red] {e}")
-        return Text(f"[red]Failed to load image: {e}[/red]")
+        return Pixels.from_ascii((UNAVAILABLE))
 
 
 def extract_extra_text(poke_data: dict) -> str:
@@ -126,10 +135,12 @@ def print_dashboard(img_path: Path | None, info: dict) -> None:
         pokemon_name = info["name"]
         poke_data = cast_to_str(info)
 
-    image_string = generate_image_widget(img_path, width=WIDTH)
+    image_string = generate_image_widget(img_path)
 
     image_panel = Panel(
-        image_string, title=f"[green]{pokemon_name.upper()}[/green]", expand=False
+        image_string,
+        title=f"[green]{pokemon_name.upper()}[/green]",
+        expand=False,
     )
 
     extra_text = extract_extra_text(poke_data)
@@ -137,7 +148,7 @@ def print_dashboard(img_path: Path | None, info: dict) -> None:
 
     # invisible Rich Table to layout widgets side-by-side
     layout_table = Table.grid(padding=2)  # Slight padding bump for breathing room
-    layout_table.add_column(no_wrap=True)  # Keeps image widget fixed
+    layout_table.add_column(no_wrap=True, max_width=WIDTH)  # Keeps image widget fixed
     layout_table.add_column()
 
     layout_table.add_row(image_panel, data_panel)

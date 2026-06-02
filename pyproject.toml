@@ -10,4 +10,5 @@ dependencies = [
     "plotext>=5.0.0",
     "rich>=13.0.0",
     "pillow",
+    "rich-pixels>=3.0.1",
 ]

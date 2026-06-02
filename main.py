@@ -1,4 +1,6 @@
+import subprocess
 import sys
+import os
 import pandas as pd
 from cmdline import (
     print_abilities,
@@ -28,6 +30,7 @@ class Action(Enum):
     COMPARE = "/cmp"
     LIST_ALL_ABILITIES = "/abilities"
     GET_ABILITY_INFO = "/ability"
+    CLEAR_SCREEN = "/clear"
 
 
 def repl() -> None:
@@ -52,7 +55,6 @@ def repl() -> None:
                 for name in valid:  # pandas will look for this variable
                     matching_entry = df.query("name == @name")
                     pokemon_info = matching_entry.iloc[0].to_dict()
-                    print(pokemon_info)
                     img_path = BASE_IMAGES_PATH / (
                         str(pokemon_info["pokedex_id"]).zfill(4) + ".png"
                     )
@@ -81,12 +83,14 @@ def repl() -> None:
                 if len(rem) != 2:
                     print("You can only compare two pokemons at a time")
                     continue
-                pokemon_a, pokemon_b = rem
+                pokemon_a, pokemon_b = list(map(lambda x: x.lower(), rem))
+                if pokemon_a not in pokemon_names or pokemon_b not in pokemon_names:
+                    print(f"Invalid pokemon names: {pokemon_a}, {pokemon_b}")
+                    continue
                 a_info = df.query("name == @pokemon_a").iloc[0].to_dict()
                 b_info = df.query("name == @pokemon_b").iloc[0].to_dict()
                 print_comparison(a_info, b_info)
 
-                print(f"Comparing: {pokemon_a} Vs {pokemon_b}")
             case Action.LIST_ALL_ABILITIES.value:
                 abilities = abilities_df[["id", "name"]].to_dict(orient="records")  # type: ignore
                 print_abilities(abilities)
@@ -107,6 +111,8 @@ def repl() -> None:
 
                 ability_entry = abilities_df.query("name == @ability").iloc[0].to_dict()
                 print_ability_info(ability_entry, have_ability)
+            case Action.CLEAR_SCREEN.value:
+                subprocess.run(["clear"] if os.name == "posix" else ["cls"])
             case _:
                 print(f"Invalid command: {cmd}")
 
