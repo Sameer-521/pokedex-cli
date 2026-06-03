@@ -11,12 +11,13 @@ from cmdline import (
     print_ability_info,
     print_type_map,
 )
+from handlers import display_help
 from enum import Enum
 from pathlib import Path
 
-CSV_PATH = "./pokemon_complete_2025.csv"
-ABILITIES_CSV_PATH = "./abilities.csv"
-TYPE_CHART_CSV_PATH = "./pokemon_type_chart.csv"
+CSV_PATH = "./pokemon-data/pokemon_complete_2025.csv"
+ABILITIES_CSV_PATH = "./pokemon-data/abilities.csv"
+TYPE_CHART_CSV_PATH = "./pokemon-data/pokemon_type_chart.csv"
 BASE_IMAGES_PATH = Path.home() / "pokedex-cli/pokemon-images/thumbnails/"
 
 df = pd.read_csv(CSV_PATH)
@@ -66,6 +67,9 @@ def repl() -> None:
                     print_dashboard(img_path.absolute(), pokemon_info)
 
             case Action.GET_INFO_BY_ID.value:
+                if len(rem) == 0:
+                    print("Please enter a valid pokemon ID")
+                    continue
                 try:
                     valid_ids = {
                         id for id in rem if (int(id) > 0) and (int(id) <= 1025)
@@ -123,6 +127,8 @@ def repl() -> None:
                 print_type_map(type_chart_df)
             case Action.CLEAR_SCREEN.value:
                 subprocess.run(["clear"] if os.name == "posix" else ["cls"])
+            case Action.DISPLAY_HELP.value:
+                display_help()
             case _:
                 print(f"Invalid command: {cmd}")
 
