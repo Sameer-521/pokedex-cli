@@ -9,16 +9,19 @@ from cmdline import (
     print_banner,
     get_prompt,
     print_ability_info,
+    print_type_map,
 )
 from enum import Enum
 from pathlib import Path
 
 CSV_PATH = "./pokemon_complete_2025.csv"
 ABILITIES_CSV_PATH = "./abilities.csv"
+TYPE_CHART_CSV_PATH = "./pokemon_type_chart.csv"
 BASE_IMAGES_PATH = Path.home() / "pokedex-cli/pokemon-images/thumbnails/"
 
 df = pd.read_csv(CSV_PATH)
 abilities_df = pd.read_csv(ABILITIES_CSV_PATH)[:311]
+type_chart_df = pd.read_csv(TYPE_CHART_CSV_PATH)
 
 pokemon_names = df["name"].to_list()
 ABILITIES = abilities_df["name"].to_list()  # type: ignore
@@ -31,6 +34,8 @@ class Action(Enum):
     LIST_ALL_ABILITIES = "/abilities"
     GET_ABILITY_INFO = "/ability"
     CLEAR_SCREEN = "/clear"
+    TYPE_MATCHUP = "/type-matchup"
+    DISPLAY_HELP = "/help"
 
 
 def repl() -> None:
@@ -80,12 +85,15 @@ def repl() -> None:
                 if invalid:
                     print(f"Invalid IDs: {invalid}")
             case Action.COMPARE.value:
-                if len(rem) != 2:
-                    print("You can only compare two pokemons at a time")
+                if len(rem) < 2:
+                    print("Please enter two pokemon names")
                     continue
-                pokemon_a, pokemon_b = list(map(lambda x: x.lower(), rem))
-                if pokemon_a not in pokemon_names or pokemon_b not in pokemon_names:
-                    print(f"Invalid pokemon names: {pokemon_a}, {pokemon_b}")
+                pokemon_a, pokemon_b = list(map(lambda x: x.lower(), rem[0:2]))
+                invalid = [
+                    pk for pk in [pokemon_a, pokemon_b] if pk not in pokemon_names
+                ]
+                if invalid:
+                    print(f"Invalid pokemon name(s): {invalid}")
                     continue
                 a_info = df.query("name == @pokemon_a").iloc[0].to_dict()
                 b_info = df.query("name == @pokemon_b").iloc[0].to_dict()
@@ -111,6 +119,8 @@ def repl() -> None:
 
                 ability_entry = abilities_df.query("name == @ability").iloc[0].to_dict()
                 print_ability_info(ability_entry, have_ability)
+            case Action.TYPE_MATCHUP.value:
+                print_type_map(type_chart_df)
             case Action.CLEAR_SCREEN.value:
                 subprocess.run(["clear"] if os.name == "posix" else ["cls"])
             case _:

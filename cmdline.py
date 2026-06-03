@@ -1,3 +1,4 @@
+import pandas as pd
 import plotext as plt
 from PIL import Image
 from rich_pixels import Pixels
@@ -25,6 +26,70 @@ banner_text = (
 UNAVAILABLE = (
     "██████╗\n ██╔═══██╗\n ╚═╝  ██╔╝\n    ██╔═╝\n   ██╔╝\n   ╚═╝\n\n   ██╗\n   ╚═╝"
 )
+
+TYPE_CHART_CSV_PATH = "pokemon_type_chart.csv"
+
+ABBR_TO_FULL = {
+    "NOR": "Normal",
+    "FIR": "Fire",
+    "WAT": "Water",
+    "ELE": "Electric",
+    "GRA": "Grass",
+    "ICE": "Ice",
+    "FIG": "Fighting",
+    "POI": "Poison",
+    "GRO": "Ground",
+    "FLY": "Flying",
+    "PSY": "Psychic",
+    "BUG": "Bug",
+    "ROC": "Rock",
+    "GHO": "Ghost",
+    "DRA": "Dragon",
+    "DAR": "Dark",
+    "STE": "Steel",
+    "FAI": "Fairy",
+}
+
+FULL_TO_ABBR = {v: k for k, v in ABBR_TO_FULL.items()}
+
+EMOJI_BY_TYPE = {
+    "Normal": "⚪",
+    "Fire": "🔥",
+    "Water": "💧",
+    "Electric": "⚡",
+    "Grass": "🌿",
+    "Ice": "❄️",
+    "Fighting": "🥊",
+    "Poison": "☣️",
+    "Ground": "🏜️",
+    "Flying": "🦅",
+    "Psychic": "🔮",
+    "Bug": "🐛",
+    "Rock": "🪨",
+    "Ghost": "👻",
+    "Dragon": "🐉",
+    "Dark": "🌑",
+    "Steel": "⚙️",
+    "Fairy": "🧚",
+}
+
+EFFECTIVENESS_STYLE = {
+    2.0: "on green4",
+    1.0: "on grey35",
+    0.5: "on dark_red",
+    0.0: "on grey7",
+}
+EFFECTIVENESS_STYLE = {
+    2.0: "on green",
+    1.0: "on white",
+    0.5: "on red",
+    0.0: "on black",
+}
+
+
+def _to_emoji(label: str) -> str:
+    full_name = ABBR_TO_FULL.get(label, str(label)).title()
+    return EMOJI_BY_TYPE.get(full_name, label)
 
 
 def print_banner():
@@ -275,3 +340,73 @@ def print_ability_info(ability: dict, have_ability: dict) -> None:
         expand=False,
     )
     console.print(panel)
+
+
+def _build_effectiveness_text(type_chart_df: pd.DataFrame) -> Text:
+    header_parts = [" " * 3]
+    for col in type_chart_df.columns[1:]:
+        emoji = _to_emoji(col)
+        header_parts.append(f"{emoji}")
+    header_str = "".join(header_parts)
+
+    result = Text(header_str)
+    result.append("\n")
+
+    for _, row in type_chart_df.iterrows():
+        atk_emoji = _to_emoji(row.iloc[0])
+        row_text = Text(f"{atk_emoji} ")
+        for val in row.iloc[1:]:
+            v = float(val)
+            style = EFFECTIVENESS_STYLE.get(v, "")
+            row_text.append("  ", style=style)
+        result.append(row_text)
+        result.append("\n")
+
+    return result
+
+
+def print_type_map(type_chart_df: pd.DataFrame) -> None:
+    heatmap_text = _build_effectiveness_text(type_chart_df)
+
+    # --- Left panel: the heatmap ---
+    map_panel = Panel(
+        heatmap_text,
+        title="[bold]TYPE EFFECTIVENESS CHART[/bold]",
+        expand=False,
+    )
+
+    # --- Right panel: legend + type key ---
+    legend_text = Text()
+    legend_text.append("  ", style="on green")
+    legend_text.append("  2× Super effective\n")
+    legend_text.append("  ", style="on white")
+    legend_text.append("  1× Normal\n")
+    legend_text.append("  ", style="on red")
+    legend_text.append("  0.5× Not very effective\n")
+    legend_text.append("  ", style="on black")
+    legend_text.append("  0× No effect\n")
+
+    legend_content = Table.grid(padding=(0, 1))
+    legend_content.add_column()
+    legend_content.add_row(Text("Effectiveness", style="bold underline"))
+    legend_content.add_row(Text(""))
+    legend_content.add_row(legend_text)
+    legend_content.add_row(Text(""))
+    legend_content.add_row(Text("Type Key", style="bold underline"))
+    legend_content.add_row(Text(""))
+    for name, emoji in EMOJI_BY_TYPE.items():
+        legend_content.add_row(Text(f"{emoji}  {name}"))
+
+    legend_panel = Panel(
+        legend_content,
+        title="[bold]LEGEND[/bold]",
+        expand=False,
+    )
+
+    # --- Side-by-side layout ---
+    layout = Table.grid(padding=2)
+    layout.add_column(no_wrap=True)
+    layout.add_column(no_wrap=True)
+    layout.add_row(map_panel, legend_panel)
+
+    console.print(layout)
