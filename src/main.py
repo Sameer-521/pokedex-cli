@@ -15,10 +15,11 @@ from handlers import display_help
 from enum import Enum
 from pathlib import Path
 
-CSV_PATH = "./pokemon-data/pokemon_complete_2025.csv"
-ABILITIES_CSV_PATH = "./pokemon-data/abilities.csv"
-TYPE_CHART_CSV_PATH = "./pokemon-data/pokemon_type_chart.csv"
-BASE_IMAGES_PATH = Path.home() / "pokedex-cli/pokemon-images/thumbnails/"
+BASE_PATH = Path.home() / "pokedex-cli"
+CSV_PATH = BASE_PATH / "pokemon-data/pokemon_complete_2025.csv"
+ABILITIES_CSV_PATH = BASE_PATH / "pokemon-data/abilities.csv"
+TYPE_CHART_CSV_PATH = BASE_PATH / "pokemon-data/pokemon_type_chart.csv"
+BASE_IMAGES_PATH = BASE_PATH / "pokemon-images/thumbnails/"
 
 df = pd.read_csv(CSV_PATH)
 abilities_df = pd.read_csv(ABILITIES_CSV_PATH)[:311]
@@ -133,7 +134,7 @@ def repl() -> None:
                 print(f"Invalid command: {cmd}")
 
 
-def main():
+def main() -> None:
     print_banner()
     repl()
 

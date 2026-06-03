@@ -1,0 +1,16 @@
+{
+  "typeCheckingMode": "standard",
+  "useLibraryCodeForTypes": false,
+  "disableBytesTypePromotions": true,
+  "analyzeUnannotatedFunctions": false,
+  "deprecateTypingAliases": false,
+  "exclude": [
+    ".venv",
+    "venv",
+    "**/__pycache__",
+    "**/node_modules",
+    "**/dist",
+    "**/build",
+    "**/migrations"
+  ]
+}
