@@ -15,7 +15,8 @@ from handlers import display_help
 from enum import Enum
 from pathlib import Path
 
-BASE_PATH = Path.home() / "pokedex-cli"
+BASE_PATH = Path(__file__).resolve().parent.parent
+
 CSV_PATH = BASE_PATH / "pokemon-data/pokemon_complete_2025.csv"
 ABILITIES_CSV_PATH = BASE_PATH / "pokemon-data/abilities.csv"
 TYPE_CHART_CSV_PATH = BASE_PATH / "pokemon-data/pokemon_type_chart.csv"
