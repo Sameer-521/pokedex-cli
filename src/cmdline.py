@@ -410,3 +410,33 @@ def print_type_map(type_chart_df: pd.DataFrame) -> None:
     layout.add_row(map_panel, legend_panel)
 
     console.print(layout)
+
+
+def print_evolution_info(
+    pokedex_id: str | int,
+    name: str,
+    chain_lines: list[str],
+    conditions: list[str],
+) -> None:
+    content = Text()
+
+    header = f"No.{pokedex_id} {name.title()}"
+    content.append(header, style="bold magenta")
+    content.append("\n\n")
+
+    content.append("Evolution chain:\n", style="bold")
+    chain_text = "\n".join(chain_lines)
+    content.append(Text.from_markup(f"  {chain_text}"))
+
+    if conditions:
+        content.append("\n\n")
+        content.append("Conditions:\n", style="bold")
+        for cond in conditions:
+            content.append(f"  {cond}\n")
+
+    panel = Panel(
+        content,
+        title="[bold]Evolution[/bold]",
+        expand=False,
+    )
+    console.print(panel)

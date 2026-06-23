@@ -1,3 +1,4 @@
+import json
 import subprocess
 import sys
 import os
@@ -11,7 +12,7 @@ from cmdline import (
     print_ability_info,
     print_type_map,
 )
-from handlers import display_help
+from handlers import display_help, handle_evo
 from enum import Enum
 from pathlib import Path
 
@@ -20,11 +21,15 @@ BASE_PATH = Path(__file__).resolve().parent.parent
 CSV_PATH = BASE_PATH / "pokemon-data/pokemon_complete_2025.csv"
 ABILITIES_CSV_PATH = BASE_PATH / "pokemon-data/abilities.csv"
 TYPE_CHART_CSV_PATH = BASE_PATH / "pokemon-data/pokemon_type_chart.csv"
+EVO_JSON_PATH = BASE_PATH / "pokemon-data/Pokemon-evolution.json"
 BASE_IMAGES_PATH = BASE_PATH / "pokemon-images/thumbnails/"
 
 df = pd.read_csv(CSV_PATH)
 abilities_df = pd.read_csv(ABILITIES_CSV_PATH)[:311]
 type_chart_df = pd.read_csv(TYPE_CHART_CSV_PATH)
+
+with open(EVO_JSON_PATH, "r", encoding="utf-8") as f:
+    evo_data = json.load(f)
 
 pokemon_names = df["name"].to_list()
 ABILITIES = abilities_df["name"].to_list()  # type: ignore
@@ -39,6 +44,7 @@ class Action(Enum):
     CLEAR_SCREEN = "/clear"
     TYPE_MATCHUP = "/type-matchup"
     DISPLAY_HELP = "/help"
+    GET_EVOLUTION = "/evo"
 
 
 def repl() -> None:
@@ -131,6 +137,15 @@ def repl() -> None:
                 subprocess.run(["clear"] if os.name == "posix" else ["cls"])
             case Action.DISPLAY_HELP.value:
                 display_help()
+            case Action.GET_EVOLUTION.value:
+                if len(rem) == 0:
+                    print("Please specify a pokemon name")
+                    continue
+                name = rem[0].lower()
+                if name not in pokemon_names:
+                    print(f"Invalid pokemon name: {rem[0]}")
+                    continue
+                handle_evo(name, df, evo_data)
             case _:
                 print(f"Invalid command: {cmd}")
 

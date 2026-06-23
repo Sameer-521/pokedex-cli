@@ -1,0 +1,1026 @@
+pokedex_id,name,evolves_from,evolution_trigger,evolution_condition
+1,bulbasaur,,,
+2,ivysaur,bulbasaur,Level Up,Level 16
+3,venusaur,ivysaur,Level Up,Level 32
+4,charmander,,,
+5,charmeleon,charmander,Level Up,Level 16
+6,charizard,charmeleon,Level Up,Level 36
+7,squirtle,,,
+8,wartortle,squirtle,Level Up,Level 16
+9,blastoise,wartortle,Level Up,Level 36
+10,caterpie,,,
+11,metapod,caterpie,Level Up,Level 7
+12,butterfree,metapod,Level Up,Level 10
+13,weedle,,,
+14,kakuna,weedle,Level Up,Level 7
+15,beedrill,kakuna,Level Up,Level 10
+16,pidgey,,,
+17,pidgeotto,pidgey,Level Up,Level 18
+18,pidgeot,pidgeotto,Level Up,Level 36
+19,rattata,,,
+20,raticate,rattata,Level Up,Level 20
+21,spearow,,,
+22,fearow,spearow,Level Up,Level 20
+23,ekans,,,
+24,arbok,ekans,Level Up,Level 22
+25,pikachu,pichu,Level Up,Happiness 220
+26,raichu,pikachu,Use Item,Thunder Stone
+27,sandshrew,,,
+28,sandslash,sandshrew,Level Up,Level 22
+29,nidoran-f,,,
+30,nidorina,nidoran-f,Level Up,Level 16
+31,nidoqueen,nidorina,Use Item,Moon Stone
+32,nidoran-m,,,
+33,nidorino,nidoran-m,Level Up,Level 16
+34,nidoking,nidorino,Use Item,Moon Stone
+35,clefairy,cleffa,Level Up,Happiness 160
+36,clefable,clefairy,Use Item,Moon Stone
+37,vulpix,,,
+38,ninetales,vulpix,Use Item,Fire Stone
+39,jigglypuff,igglybuff,Level Up,Happiness 160
+40,wigglytuff,jigglypuff,Use Item,Moon Stone
+41,zubat,,,
+42,golbat,zubat,Level Up,Level 22
+43,oddish,,,
+44,gloom,oddish,Level Up,Level 21
+45,vileplume,gloom,Use Item,Leaf Stone
+46,paras,,,
+47,parasect,paras,Level Up,Level 24
+48,venonat,,,
+49,venomoth,venonat,Level Up,Level 31
+50,diglett,,,
+51,dugtrio,diglett,Level Up,Level 26
+52,meowth,,,
+53,persian,meowth,Level Up,Level 28
+54,psyduck,,,
+55,golduck,psyduck,Level Up,Level 33
+56,mankey,,,
+57,primeape,mankey,Level Up,Level 28
+58,growlithe,,,
+59,arcanine,growlithe,Use Item,Fire Stone
+60,poliwag,,,
+61,poliwhirl,poliwag,Level Up,Level 25
+62,poliwrath,poliwhirl,Use Item,Water Stone
+63,abra,,,
+64,kadabra,abra,Level Up,Level 16
+65,alakazam,kadabra,Trade,Trade
+66,machop,,,
+67,machoke,machop,Level Up,Level 28
+68,machamp,machoke,Trade,Trade
+69,bellsprout,,,
+70,weepinbell,bellsprout,Level Up,Level 21
+71,victreebel,weepinbell,Use Item,Leaf Stone
+72,tentacool,,,
+73,tentacruel,tentacool,Level Up,Level 30
+74,geodude,,,
+75,graveler,geodude,Level Up,Level 25
+76,golem,graveler,Trade,Trade
+77,ponyta,,,
+78,rapidash,ponyta,Level Up,Level 40
+79,slowpoke,,,
+80,slowbro,slowpoke,Level Up,Level 37
+81,magnemite,,,
+82,magneton,magnemite,Level Up,Level 30
+83,farfetchd,,,
+84,doduo,,,
+85,dodrio,doduo,Level Up,Level 31
+86,seel,,,
+87,dewgong,seel,Level Up,Level 34
+88,grimer,,,
+89,muk,grimer,Level Up,Level 38
+90,shellder,,,
+91,cloyster,shellder,Use Item,Water Stone
+92,gastly,,,
+93,haunter,gastly,Level Up,Level 25
+94,gengar,haunter,Trade,Trade
+95,onix,,,
+96,drowzee,,,
+97,hypno,drowzee,Level Up,Level 26
+98,krabby,,,
+99,kingler,krabby,Level Up,Level 28
+100,voltorb,,,
+101,electrode,voltorb,Level Up,Level 30
+102,exeggcute,,,
+103,exeggutor,exeggcute,Use Item,Leaf Stone
+104,cubone,,,
+105,marowak,cubone,Level Up,Level 28
+106,hitmonlee,tyrogue,Level Up,"Level 20, Attack > Defense"
+107,hitmonchan,tyrogue,Level Up,"Level 20, Attack < Defense"
+108,lickitung,,,
+109,koffing,,,
+110,weezing,koffing,Level Up,Level 35
+111,rhyhorn,,,
+112,rhydon,rhyhorn,Level Up,Level 42
+113,chansey,happiny,Level Up,"Day, Holding Oval Stone"
+114,tangela,,,
+115,kangaskhan,,,
+116,horsea,,,
+117,seadra,horsea,Level Up,Level 32
+118,goldeen,,,
+119,seaking,goldeen,Level Up,Level 33
+120,staryu,,,
+121,starmie,staryu,Use Item,Water Stone
+122,mr-mime,mime-jr,Level Up,Knows Mimic
+123,scyther,,,
+124,jynx,smoochum,Level Up,Level 30
+125,electabuzz,elekid,Level Up,Level 30
+126,magmar,magby,Level Up,Level 30
+127,pinsir,,,
+128,tauros,,,
+129,magikarp,,,
+130,gyarados,magikarp,Level Up,Level 20
+131,lapras,,,
+132,ditto,,,
+133,eevee,,,
+134,vaporeon,eevee,Use Item,Water Stone
+135,jolteon,eevee,Use Item,Thunder Stone
+136,flareon,eevee,Use Item,Fire Stone
+137,porygon,,,
+138,omanyte,,,
+139,omastar,omanyte,Level Up,Level 40
+140,kabuto,,,
+141,kabutops,kabuto,Level Up,Level 40
+142,aerodactyl,,,
+143,snorlax,munchlax,Level Up,Happiness 160
+144,articuno,,,
+145,zapdos,,,
+146,moltres,,,
+147,dratini,,,
+148,dragonair,dratini,Level Up,Level 30
+149,dragonite,dragonair,Level Up,Level 55
+150,mewtwo,,,
+151,mew,,,
+152,chikorita,,,
+153,bayleef,chikorita,Level Up,Level 16
+154,meganium,bayleef,Level Up,Level 32
+155,cyndaquil,,,
+156,quilava,cyndaquil,Level Up,Level 14
+157,typhlosion,quilava,Level Up,Level 36
+158,totodile,,,
+159,croconaw,totodile,Level Up,Level 18
+160,feraligatr,croconaw,Level Up,Level 30
+161,sentret,,,
+162,furret,sentret,Level Up,Level 15
+163,hoothoot,,,
+164,noctowl,hoothoot,Level Up,Level 20
+165,ledyba,,,
+166,ledian,ledyba,Level Up,Level 18
+167,spinarak,,,
+168,ariados,spinarak,Level Up,Level 22
+169,crobat,golbat,Level Up,Happiness 160
+170,chinchou,,,
+171,lanturn,chinchou,Level Up,Level 27
+172,pichu,,,
+173,cleffa,,,
+174,igglybuff,,,
+175,togepi,,,
+176,togetic,togepi,Level Up,Happiness 160
+177,natu,,,
+178,xatu,natu,Level Up,Level 25
+179,mareep,,,
+180,flaaffy,mareep,Level Up,Level 15
+181,ampharos,flaaffy,Level Up,Level 30
+182,bellossom,gloom,Use Item,Sun Stone
+183,marill,azurill,Level Up,Happiness 160
+184,azumarill,marill,Level Up,Level 18
+185,sudowoodo,bonsly,Level Up,Knows Mimic
+186,politoed,poliwhirl,Trade,Holding Kings Rock
+187,hoppip,,,
+188,skiploom,hoppip,Level Up,Level 18
+189,jumpluff,skiploom,Level Up,Level 27
+190,aipom,,,
+191,sunkern,,,
+192,sunflora,sunkern,Use Item,Sun Stone
+193,yanma,,,
+194,wooper,,,
+195,quagsire,wooper,Level Up,Level 20
+196,espeon,eevee,Level Up,"Happiness 160, Day"
+197,umbreon,eevee,Level Up,"Happiness 160, Night"
+198,murkrow,,,
+199,slowking,slowpoke,Trade,Holding Kings Rock
+200,misdreavus,,,
+201,unown,,,
+202,wobbuffet,wynaut,Level Up,Level 15
+203,girafarig,,,
+204,pineco,,,
+205,forretress,pineco,Level Up,Level 31
+206,dunsparce,,,
+207,gligar,,,
+208,steelix,onix,Trade,Holding Metal Coat
+209,snubbull,,,
+210,granbull,snubbull,Level Up,Level 23
+211,qwilfish,,,
+212,scizor,scyther,Trade,Holding Metal Coat
+213,shuckle,,,
+214,heracross,,,
+215,sneasel,,,
+216,teddiursa,,,
+217,ursaring,teddiursa,Level Up,Level 30
+218,slugma,,,
+219,magcargo,slugma,Level Up,Level 38
+220,swinub,,,
+221,piloswine,swinub,Level Up,Level 33
+222,corsola,,,
+223,remoraid,,,
+224,octillery,remoraid,Level Up,Level 25
+225,delibird,,,
+226,mantine,mantyke,Level Up,With Remoraid in party
+227,skarmory,,,
+228,houndour,,,
+229,houndoom,houndour,Level Up,Level 24
+230,kingdra,seadra,Trade,Holding Dragon Scale
+231,phanpy,,,
+232,donphan,phanpy,Level Up,Level 25
+233,porygon2,porygon,Trade,Holding Up Grade
+234,stantler,,,
+235,smeargle,,,
+236,tyrogue,,,
+237,hitmontop,tyrogue,Level Up,"Level 20, Attack = Defense"
+238,smoochum,,,
+239,elekid,,,
+240,magby,,,
+241,miltank,,,
+242,blissey,chansey,Level Up,Happiness 160
+243,raikou,,,
+244,entei,,,
+245,suicune,,,
+246,larvitar,,,
+247,pupitar,larvitar,Level Up,Level 30
+248,tyranitar,pupitar,Level Up,Level 55
+249,lugia,,,
+250,ho-oh,,,
+251,celebi,,,
+252,treecko,,,
+253,grovyle,treecko,Level Up,Level 16
+254,sceptile,grovyle,Level Up,Level 36
+255,torchic,,,
+256,combusken,torchic,Level Up,Level 16
+257,blaziken,combusken,Level Up,Level 36
+258,mudkip,,,
+259,marshtomp,mudkip,Level Up,Level 16
+260,swampert,marshtomp,Level Up,Level 36
+261,poochyena,,,
+262,mightyena,poochyena,Level Up,Level 18
+263,zigzagoon,,,
+264,linoone,zigzagoon,Level Up,Level 20
+265,wurmple,,,
+266,silcoon,wurmple,Level Up,Level 7
+267,beautifly,silcoon,Level Up,Level 10
+268,cascoon,wurmple,Level Up,Level 7
+269,dustox,cascoon,Level Up,Level 10
+270,lotad,,,
+271,lombre,lotad,Level Up,Level 14
+272,ludicolo,lombre,Use Item,Water Stone
+273,seedot,,,
+274,nuzleaf,seedot,Level Up,Level 14
+275,shiftry,nuzleaf,Use Item,Leaf Stone
+276,taillow,,,
+277,swellow,taillow,Level Up,Level 22
+278,wingull,,,
+279,pelipper,wingull,Level Up,Level 25
+280,ralts,,,
+281,kirlia,ralts,Level Up,Level 20
+282,gardevoir,kirlia,Level Up,Level 30
+283,surskit,,,
+284,masquerain,surskit,Level Up,Level 22
+285,shroomish,,,
+286,breloom,shroomish,Level Up,Level 23
+287,slakoth,,,
+288,vigoroth,slakoth,Level Up,Level 18
+289,slaking,vigoroth,Level Up,Level 36
+290,nincada,,,
+291,ninjask,nincada,Level Up,Level 20
+292,shedinja,nincada,Shed,Shed
+293,whismur,,,
+294,loudred,whismur,Level Up,Level 20
+295,exploud,loudred,Level Up,Level 40
+296,makuhita,,,
+297,hariyama,makuhita,Level Up,Level 24
+298,azurill,,,
+299,nosepass,,,
+300,skitty,,,
+301,delcatty,skitty,Use Item,Moon Stone
+302,sableye,,,
+303,mawile,,,
+304,aron,,,
+305,lairon,aron,Level Up,Level 32
+306,aggron,lairon,Level Up,Level 42
+307,meditite,,,
+308,medicham,meditite,Level Up,Level 37
+309,electrike,,,
+310,manectric,electrike,Level Up,Level 26
+311,plusle,,,
+312,minun,,,
+313,volbeat,,,
+314,illumise,,,
+315,roselia,budew,Level Up,"Happiness 160, Day"
+316,gulpin,,,
+317,swalot,gulpin,Level Up,Level 26
+318,carvanha,,,
+319,sharpedo,carvanha,Level Up,Level 30
+320,wailmer,,,
+321,wailord,wailmer,Level Up,Level 40
+322,numel,,,
+323,camerupt,numel,Level Up,Level 33
+324,torkoal,,,
+325,spoink,,,
+326,grumpig,spoink,Level Up,Level 32
+327,spinda,,,
+328,trapinch,,,
+329,vibrava,trapinch,Level Up,Level 35
+330,flygon,vibrava,Level Up,Level 45
+331,cacnea,,,
+332,cacturne,cacnea,Level Up,Level 32
+333,swablu,,,
+334,altaria,swablu,Level Up,Level 35
+335,zangoose,,,
+336,seviper,,,
+337,lunatone,,,
+338,solrock,,,
+339,barboach,,,
+340,whiscash,barboach,Level Up,Level 30
+341,corphish,,,
+342,crawdaunt,corphish,Level Up,Level 30
+343,baltoy,,,
+344,claydol,baltoy,Level Up,Level 36
+345,lileep,,,
+346,cradily,lileep,Level Up,Level 40
+347,anorith,,,
+348,armaldo,anorith,Level Up,Level 40
+349,feebas,,,
+350,milotic,feebas,Level Up,Beauty 170
+351,castform,,,
+352,kecleon,,,
+353,shuppet,,,
+354,banette,shuppet,Level Up,Level 37
+355,duskull,,,
+356,dusclops,duskull,Level Up,Level 37
+357,tropius,,,
+358,chimecho,chingling,Level Up,"Happiness 220, Night"
+359,absol,,,
+360,wynaut,,,
+361,snorunt,,,
+362,glalie,snorunt,Level Up,Level 42
+363,spheal,,,
+364,sealeo,spheal,Level Up,Level 32
+365,walrein,sealeo,Level Up,Level 44
+366,clamperl,,,
+367,huntail,clamperl,Trade,Holding Deep Sea Tooth
+368,gorebyss,clamperl,Trade,Holding Deep Sea Scale
+369,relicanth,,,
+370,luvdisc,,,
+371,bagon,,,
+372,shelgon,bagon,Level Up,Level 30
+373,salamence,shelgon,Level Up,Level 50
+374,beldum,,,
+375,metang,beldum,Level Up,Level 20
+376,metagross,metang,Level Up,Level 45
+377,regirock,,,
+378,regice,,,
+379,registeel,,,
+380,latias,,,
+381,latios,,,
+382,kyogre,,,
+383,groudon,,,
+384,rayquaza,,,
+385,jirachi,,,
+387,turtwig,,,
+388,grotle,turtwig,Level Up,Level 18
+389,torterra,grotle,Level Up,Level 32
+390,chimchar,,,
+391,monferno,chimchar,Level Up,Level 14
+392,infernape,monferno,Level Up,Level 36
+393,piplup,,,
+394,prinplup,piplup,Level Up,Level 16
+395,empoleon,prinplup,Level Up,Level 36
+396,starly,,,
+397,staravia,starly,Level Up,Level 14
+398,staraptor,staravia,Level Up,Level 34
+399,bidoof,,,
+400,bibarel,bidoof,Level Up,Level 15
+401,kricketot,,,
+402,kricketune,kricketot,Level Up,Level 10
+403,shinx,,,
+404,luxio,shinx,Level Up,Level 15
+405,luxray,luxio,Level Up,Level 30
+406,budew,,,
+407,roserade,roselia,Use Item,Shiny Stone
+408,cranidos,,,
+409,rampardos,cranidos,Level Up,Level 30
+410,shieldon,,,
+411,bastiodon,shieldon,Level Up,Level 30
+412,burmy,,,
+414,mothim,burmy,Level Up,"Level 20, Male only"
+415,combee,,,
+416,vespiquen,combee,Level Up,"Level 21, Female only"
+417,pachirisu,,,
+418,buizel,,,
+419,floatzel,buizel,Level Up,Level 26
+420,cherubi,,,
+421,cherrim,cherubi,Level Up,Level 25
+422,shellos,,,
+423,gastrodon,shellos,Level Up,Level 30
+424,ambipom,aipom,Level Up,Knows Double Hit
+425,drifloon,,,
+426,drifblim,drifloon,Level Up,Level 28
+427,buneary,,,
+428,lopunny,buneary,Level Up,Happiness 160
+429,mismagius,misdreavus,Use Item,Dusk Stone
+430,honchkrow,murkrow,Use Item,Dusk Stone
+431,glameow,,,
+432,purugly,glameow,Level Up,Level 38
+433,chingling,,,
+434,stunky,,,
+435,skuntank,stunky,Level Up,Level 34
+436,bronzor,,,
+437,bronzong,bronzor,Level Up,Level 33
+438,bonsly,,,
+439,mime-jr,,,
+440,happiny,,,
+441,chatot,,,
+442,spiritomb,,,
+443,gible,,,
+444,gabite,gible,Level Up,Level 24
+445,garchomp,gabite,Level Up,Level 48
+446,munchlax,,,
+447,riolu,,,
+448,lucario,riolu,Level Up,"Happiness 160, Day"
+449,hippopotas,,,
+450,hippowdon,hippopotas,Level Up,Level 34
+451,skorupi,,,
+452,drapion,skorupi,Level Up,Level 40
+453,croagunk,,,
+454,toxicroak,croagunk,Level Up,Level 37
+455,carnivine,,,
+456,finneon,,,
+457,lumineon,finneon,Level Up,Level 31
+458,mantyke,,,
+459,snover,,,
+460,abomasnow,snover,Level Up,Level 40
+461,weavile,sneasel,Level Up,"Night, Holding Razor Claw"
+462,magnezone,magneton,Level Up,Near Mt Coronet
+463,lickilicky,lickitung,Level Up,Knows Rollout
+464,rhyperior,rhydon,Trade,Holding Protector
+465,tangrowth,tangela,Level Up,Knows Ancient Power
+466,electivire,electabuzz,Trade,Holding Electirizer
+467,magmortar,magmar,Trade,Holding Magmarizer
+468,togekiss,togetic,Use Item,Shiny Stone
+469,yanmega,yanma,Level Up,Knows Ancient Power
+470,leafeon,eevee,Level Up,Near Eterna Forest
+471,glaceon,eevee,Level Up,Near Sinnoh Route 217
+472,gliscor,gligar,Level Up,"Night, Holding Razor Fang"
+473,mamoswine,piloswine,Level Up,Knows Ancient Power
+474,porygon-z,porygon2,Trade,Holding Dubious Disc
+475,gallade,kirlia,Use Item,Dawn Stone
+476,probopass,nosepass,Level Up,Near Mt Coronet
+477,dusknoir,dusclops,Trade,Holding Reaper Cloth
+478,froslass,snorunt,Use Item,Dawn Stone
+479,rotom,,,
+480,uxie,,,
+481,mesprit,,,
+482,azelf,,,
+483,dialga,,,
+484,palkia,,,
+485,heatran,,,
+486,regigigas,,,
+488,cresselia,,,
+489,phione,,,
+490,manaphy,phione,,
+491,darkrai,,,
+493,arceus,,,
+494,victini,,,
+495,snivy,,,
+496,servine,snivy,Level Up,Level 17
+497,serperior,servine,Level Up,Level 36
+498,tepig,,,
+499,pignite,tepig,Level Up,Level 17
+500,emboar,pignite,Level Up,Level 36
+501,oshawott,,,
+502,dewott,oshawott,Level Up,Level 17
+503,samurott,dewott,Level Up,Level 36
+504,patrat,,,
+505,watchog,patrat,Level Up,Level 20
+506,lillipup,,,
+507,herdier,lillipup,Level Up,Level 16
+508,stoutland,herdier,Level Up,Level 32
+509,purrloin,,,
+510,liepard,purrloin,Level Up,Level 20
+511,pansage,,,
+512,simisage,pansage,Use Item,Leaf Stone
+513,pansear,,,
+514,simisear,pansear,Use Item,Fire Stone
+515,panpour,,,
+516,simipour,panpour,Use Item,Water Stone
+517,munna,,,
+518,musharna,munna,Use Item,Moon Stone
+519,pidove,,,
+520,tranquill,pidove,Level Up,Level 21
+521,unfezant,tranquill,Level Up,Level 32
+522,blitzle,,,
+523,zebstrika,blitzle,Level Up,Level 27
+524,roggenrola,,,
+525,boldore,roggenrola,Level Up,Level 25
+526,gigalith,boldore,Trade,Trade
+527,woobat,,,
+528,swoobat,woobat,Level Up,Happiness 160
+529,drilbur,,,
+530,excadrill,drilbur,Level Up,Level 31
+531,audino,,,
+532,timburr,,,
+533,gurdurr,timburr,Level Up,Level 25
+534,conkeldurr,gurdurr,Trade,Trade
+535,tympole,,,
+536,palpitoad,tympole,Level Up,Level 25
+537,seismitoad,palpitoad,Level Up,Level 36
+538,throh,,,
+539,sawk,,,
+540,sewaddle,,,
+541,swadloon,sewaddle,Level Up,Level 20
+542,leavanny,swadloon,Level Up,Happiness 220
+543,venipede,,,
+544,whirlipede,venipede,Level Up,Level 22
+545,scolipede,whirlipede,Level Up,Level 30
+546,cottonee,,,
+547,whimsicott,cottonee,Use Item,Sun Stone
+548,petilil,,,
+549,lilligant,petilil,Use Item,Sun Stone
+551,sandile,,,
+552,krokorok,sandile,Level Up,Level 29
+553,krookodile,krokorok,Level Up,Level 40
+554,darumaka,,,
+556,maractus,,,
+557,dwebble,,,
+558,crustle,dwebble,Level Up,Level 34
+559,scraggy,,,
+560,scrafty,scraggy,Level Up,Level 39
+561,sigilyph,,,
+562,yamask,,,
+563,cofagrigus,yamask,Level Up,Level 34
+564,tirtouga,,,
+565,carracosta,tirtouga,Level Up,Level 37
+566,archen,,,
+567,archeops,archen,Level Up,Level 37
+568,trubbish,,,
+569,garbodor,trubbish,Level Up,Level 36
+570,zorua,,,
+571,zoroark,zorua,Level Up,Level 30
+572,minccino,,,
+573,cinccino,minccino,Use Item,Shiny Stone
+574,gothita,,,
+575,gothorita,gothita,Level Up,Level 32
+576,gothitelle,gothorita,Level Up,Level 41
+577,solosis,,,
+578,duosion,solosis,Level Up,Level 32
+579,reuniclus,duosion,Level Up,Level 41
+580,ducklett,,,
+581,swanna,ducklett,Level Up,Level 35
+582,vanillite,,,
+583,vanillish,vanillite,Level Up,Level 35
+584,vanilluxe,vanillish,Level Up,Level 47
+585,deerling,,,
+586,sawsbuck,deerling,Level Up,Level 34
+587,emolga,,,
+588,karrablast,,,
+589,escavalier,karrablast,Trade,Trade for Shelmet
+590,foongus,,,
+591,amoonguss,foongus,Level Up,Level 39
+594,alomomola,,,
+595,joltik,,,
+596,galvantula,joltik,Level Up,Level 36
+597,ferroseed,,,
+598,ferrothorn,ferroseed,Level Up,Level 40
+599,klink,,,
+600,klang,klink,Level Up,Level 38
+601,klinklang,klang,Level Up,Level 49
+602,tynamo,,,
+603,eelektrik,tynamo,Level Up,Level 39
+604,eelektross,eelektrik,Use Item,Thunder Stone
+605,elgyem,,,
+606,beheeyem,elgyem,Level Up,Level 42
+607,litwick,,,
+608,lampent,litwick,Level Up,Level 41
+609,chandelure,lampent,Use Item,Dusk Stone
+610,axew,,,
+611,fraxure,axew,Level Up,Level 38
+612,haxorus,fraxure,Level Up,Level 48
+613,cubchoo,,,
+614,beartic,cubchoo,Level Up,Level 37
+615,cryogonal,,,
+616,shelmet,,,
+617,accelgor,shelmet,Trade,Trade for Karrablast
+618,stunfisk,,,
+619,mienfoo,,,
+620,mienshao,mienfoo,Level Up,Level 50
+621,druddigon,,,
+622,golett,,,
+623,golurk,golett,Level Up,Level 43
+624,pawniard,,,
+625,bisharp,pawniard,Level Up,Level 52
+626,bouffalant,,,
+627,rufflet,,,
+628,braviary,rufflet,Level Up,Level 54
+629,vullaby,,,
+630,mandibuzz,vullaby,Level Up,Level 54
+631,heatmor,,,
+632,durant,,,
+633,deino,,,
+634,zweilous,deino,Level Up,Level 50
+635,hydreigon,zweilous,Level Up,Level 64
+636,larvesta,,,
+637,volcarona,larvesta,Level Up,Level 59
+638,cobalion,,,
+639,terrakion,,,
+640,virizion,,,
+643,reshiram,,,
+644,zekrom,,,
+646,kyurem,,,
+649,genesect,,,
+650,chespin,,,
+651,quilladin,chespin,Level Up,Level 16
+652,chesnaught,quilladin,Level Up,Level 36
+653,fennekin,,,
+654,braixen,fennekin,Level Up,Level 16
+655,delphox,braixen,Level Up,Level 36
+656,froakie,,,
+657,frogadier,froakie,Level Up,Level 16
+658,greninja,frogadier,Level Up,Level 36
+659,bunnelby,,,
+660,diggersby,bunnelby,Level Up,Level 20
+661,fletchling,,,
+662,fletchinder,fletchling,Level Up,Level 17
+663,talonflame,fletchinder,Level Up,Level 35
+664,scatterbug,,,
+665,spewpa,scatterbug,Level Up,Level 9
+666,vivillon,spewpa,Level Up,Level 12
+667,litleo,,,
+669,flabebe,,,
+670,floette,flabebe,Level Up,Level 19
+671,florges,floette,Use Item,Shiny Stone
+672,skiddo,,,
+673,gogoat,skiddo,Level Up,Level 32
+674,pancham,,,
+675,pangoro,pancham,Level Up,"Level 32, With Dark-type in party"
+676,furfrou,,,
+677,espurr,,,
+679,honedge,,,
+680,doublade,honedge,Level Up,Level 35
+682,spritzee,,,
+683,aromatisse,spritzee,Trade,Holding Sachet
+684,swirlix,,,
+685,slurpuff,swirlix,Trade,Holding Whipped Dream
+686,inkay,,,
+687,malamar,inkay,Level Up,"Level 30, Turn console upside-down"
+688,binacle,,,
+689,barbaracle,binacle,Level Up,Level 39
+690,skrelp,,,
+691,dragalge,skrelp,Level Up,Level 48
+692,clauncher,,,
+693,clawitzer,clauncher,Level Up,Level 37
+694,helioptile,,,
+695,heliolisk,helioptile,Use Item,Sun Stone
+696,tyrunt,,,
+697,tyrantrum,tyrunt,Level Up,"Level 39, Day"
+698,amaura,,,
+699,aurorus,amaura,Level Up,"Level 39, Night"
+700,sylveon,eevee,Level Up,"Knows Fairy-type move, Affection 2"
+701,hawlucha,,,
+702,dedenne,,,
+703,carbink,,,
+704,goomy,,,
+705,sliggoo,goomy,Level Up,Level 40
+706,goodra,sliggoo,Level Up,"Level 50, In rain"
+707,klefki,,,
+708,phantump,,,
+709,trevenant,phantump,Trade,Trade
+712,bergmite,,,
+713,avalugg,bergmite,Level Up,Level 37
+714,noibat,,,
+715,noivern,noibat,Level Up,Level 48
+716,xerneas,,,
+717,yveltal,,,
+719,diancie,,,
+720,hoopa,,,
+721,volcanion,,,
+722,rowlet,,,
+723,dartrix,rowlet,Level Up,Level 17
+724,decidueye,dartrix,Level Up,Level 34
+725,litten,,,
+726,torracat,litten,Level Up,Level 17
+727,incineroar,torracat,Level Up,Level 34
+728,popplio,,,
+729,brionne,popplio,Level Up,Level 17
+730,primarina,brionne,Level Up,Level 34
+731,pikipek,,,
+732,trumbeak,pikipek,Level Up,Level 14
+733,toucannon,trumbeak,Level Up,Level 28
+734,yungoos,,,
+735,gumshoos,yungoos,Level Up,"Level 20, Day"
+736,grubbin,,,
+737,charjabug,grubbin,Level Up,Level 20
+738,vikavolt,charjabug,Level Up,Near Vast Poni Canyon
+739,crabrawler,,,
+740,crabominable,crabrawler,Level Up,Near Mount Lanakila
+742,cutiefly,,,
+743,ribombee,cutiefly,Level Up,Level 25
+744,rockruff,,,
+747,mareanie,,,
+748,toxapex,mareanie,Level Up,Level 38
+749,mudbray,,,
+750,mudsdale,mudbray,Level Up,Level 30
+751,dewpider,,,
+752,araquanid,dewpider,Level Up,Level 22
+753,fomantis,,,
+754,lurantis,fomantis,Level Up,"Level 34, Day"
+755,morelull,,,
+756,shiinotic,morelull,Level Up,Level 24
+757,salandit,,,
+758,salazzle,salandit,Level Up,"Level 33, Female only"
+759,stufful,,,
+760,bewear,stufful,Level Up,Level 27
+761,bounsweet,,,
+762,steenee,bounsweet,Level Up,Level 18
+763,tsareena,steenee,Level Up,Knows Stomp
+764,comfey,,,
+765,oranguru,,,
+766,passimian,,,
+767,wimpod,,,
+768,golisopod,wimpod,Level Up,Level 30
+769,sandygast,,,
+770,palossand,sandygast,Level Up,Level 42
+771,pyukumuku,,,
+772,type-null,,,
+773,silvally,type-null,Level Up,Happiness 160
+775,komala,,,
+776,turtonator,,,
+777,togedemaru,,,
+779,bruxish,,,
+780,drampa,,,
+781,dhelmise,,,
+782,jangmo-o,,,
+783,hakamo-o,jangmo-o,Level Up,Level 35
+784,kommo-o,hakamo-o,Level Up,Level 45
+785,tapu-koko,,,
+786,tapu-lele,,,
+787,tapu-bulu,,,
+788,tapu-fini,,,
+789,cosmog,,,
+790,cosmoem,cosmog,Level Up,Level 43
+791,solgaleo,cosmoem,Level Up,Level 53
+792,lunala,cosmoem,Level Up,Level 53
+793,nihilego,,,
+794,buzzwole,,,
+795,pheromosa,,,
+796,xurkitree,,,
+797,celesteela,,,
+798,kartana,,,
+799,guzzlord,,,
+800,necrozma,,,
+801,magearna,,,
+802,marshadow,,,
+803,poipole,,,
+804,naganadel,poipole,Level Up,Knows Dragon Pulse
+805,stakataka,,,
+806,blacephalon,,,
+807,zeraora,,,
+808,meltan,,,
+809,melmetal,,,
+810,grookey,,,
+811,thwackey,grookey,Level Up,Level 16
+812,rillaboom,thwackey,Level Up,Level 35
+813,scorbunny,,,
+814,raboot,scorbunny,Level Up,Level 16
+815,cinderace,raboot,Level Up,Level 35
+816,sobble,,,
+817,drizzile,sobble,Level Up,Level 16
+818,inteleon,drizzile,Level Up,Level 35
+819,skwovet,,,
+820,greedent,skwovet,Level Up,Level 24
+821,rookidee,,,
+822,corvisquire,rookidee,Level Up,Level 18
+823,corviknight,corvisquire,Level Up,Level 38
+824,blipbug,,,
+825,dottler,blipbug,Level Up,Level 10
+826,orbeetle,dottler,Level Up,Level 30
+827,nickit,,,
+828,thievul,nickit,Level Up,Level 18
+829,gossifleur,,,
+830,eldegoss,gossifleur,Level Up,Level 20
+831,wooloo,,,
+832,dubwool,wooloo,Level Up,Level 24
+833,chewtle,,,
+834,drednaw,chewtle,Level Up,Level 22
+835,yamper,,,
+836,boltund,yamper,Level Up,Level 25
+837,rolycoly,,,
+838,carkol,rolycoly,Level Up,Level 18
+839,coalossal,carkol,Level Up,Level 34
+840,applin,,,
+841,flapple,applin,Use Item,Tart Apple
+842,appletun,applin,Use Item,Sweet Apple
+843,silicobra,,,
+844,sandaconda,silicobra,Level Up,Level 36
+845,cramorant,,,
+846,arrokuda,,,
+847,barraskewda,arrokuda,Level Up,Level 26
+848,toxel,,,
+850,sizzlipede,,,
+851,centiskorch,sizzlipede,Level Up,Level 28
+852,clobbopus,,,
+853,grapploct,clobbopus,Level Up,Knows Taunt
+854,sinistea,,,
+855,polteageist,sinistea,Use Item,Cracked Pot
+856,hatenna,,,
+857,hattrem,hatenna,Level Up,Level 32
+858,hatterene,hattrem,Level Up,Level 42
+859,impidimp,,,
+860,morgrem,impidimp,Level Up,Level 32
+861,grimmsnarl,morgrem,Level Up,Level 42
+862,obstagoon,linoone,Level Up,"Level 35, Night"
+863,perrserker,meowth,Level Up,Level 28
+864,cursola,corsola,Level Up,Level 38
+865,sirfetchd,farfetchd,Three Critical Hits,Three Critical Hits
+866,mr-rime,mr-mime,Level Up,Level 42
+867,runerigus,yamask,Take Damage,Take Damage
+868,milcery,,,
+869,alcremie,milcery,Spin,Spin
+870,falinks,,,
+871,pincurchin,,,
+872,snom,,,
+873,frosmoth,snom,Level Up,"Happiness 160, Night"
+874,stonjourner,,,
+878,cufant,,,
+879,copperajah,cufant,Level Up,Level 34
+880,dracozolt,,,
+881,arctozolt,,,
+882,dracovish,,,
+883,arctovish,,,
+884,duraludon,,,
+885,dreepy,,,
+886,drakloak,dreepy,Level Up,Level 50
+887,dragapult,drakloak,Level Up,Level 60
+888,zacian,,,
+889,zamazenta,,,
+890,eternatus,,,
+891,kubfu,,,
+893,zarude,,,
+894,regieleki,,,
+895,regidrago,,,
+896,glastrier,,,
+897,spectrier,,,
+898,calyrex,,,
+899,wyrdeer,stantler,Agile Style Move,Agile Style Move
+900,kleavor,scyther,Use Item,Black Augurite
+901,ursaluna,ursaring,Use Item,Peat Block
+903,sneasler,sneasel,Level Up,"Day, Holding Razor Claw"
+904,overqwil,qwilfish,Strong Style Move,Strong Style Move
+906,sprigatito,,,
+907,floragato,sprigatito,Level Up,Level 16
+908,meowscarada,floragato,Level Up,Level 36
+909,fuecoco,,,
+910,crocalor,fuecoco,Level Up,Level 16
+911,skeledirge,crocalor,Level Up,Level 36
+912,quaxly,,,
+913,quaxwell,quaxly,Level Up,Level 16
+914,quaquaval,quaxwell,Level Up,Level 36
+915,lechonk,,,
+917,tarountula,,,
+918,spidops,tarountula,Level Up,Level 15
+919,nymble,,,
+920,lokix,nymble,Level Up,Level 24
+921,pawmi,,,
+922,pawmo,pawmi,Level Up,Level 18
+923,pawmot,pawmo,Level Up,Level Up
+924,tandemaus,,,
+926,fidough,,,
+927,dachsbun,fidough,Level Up,Level 26
+928,smoliv,,,
+929,dolliv,smoliv,Level Up,Level 25
+930,arboliva,dolliv,Level Up,Level 35
+932,nacli,,,
+933,naclstack,nacli,Level Up,Level 24
+934,garganacl,naclstack,Level Up,Level 38
+935,charcadet,,,
+936,armarouge,charcadet,Use Item,Auspicious Armor
+937,ceruledge,charcadet,Use Item,Malicious Armor
+938,tadbulb,,,
+939,bellibolt,tadbulb,Use Item,Thunder Stone
+940,wattrel,,,
+941,kilowattrel,wattrel,Level Up,Level 25
+942,maschiff,,,
+943,mabosstiff,maschiff,Level Up,Level 30
+944,shroodle,,,
+945,grafaiai,shroodle,Level Up,Level 28
+946,bramblin,,,
+947,brambleghast,bramblin,Level Up,Level Up
+948,toedscool,,,
+949,toedscruel,toedscool,Level Up,Level 30
+950,klawf,,,
+951,capsakid,,,
+952,scovillain,capsakid,Use Item,Fire Stone
+953,rellor,,,
+954,rabsca,rellor,Level Up,Level Up
+955,flittle,,,
+956,espathra,flittle,Level Up,Level 35
+957,tinkatink,,,
+958,tinkatuff,tinkatink,Level Up,Level 24
+959,tinkaton,tinkatuff,Level Up,Level 38
+960,wiglett,,,
+961,wugtrio,wiglett,Level Up,Level 26
+962,bombirdier,,,
+963,finizen,,,
+965,varoom,,,
+966,revavroom,varoom,Level Up,Level 40
+967,cyclizar,,,
+968,orthworm,,,
+969,glimmet,,,
+970,glimmora,glimmet,Level Up,Level 35
+971,greavard,,,
+972,houndstone,greavard,Level Up,"Level 30, Night"
+973,flamigo,,,
+974,cetoddle,,,
+975,cetitan,cetoddle,Use Item,Ice Stone
+976,veluza,,,
+977,dondozo,,,
+979,annihilape,primeape,Use Move,Use Move
+980,clodsire,wooper,Level Up,Level 20
+981,farigiraf,girafarig,Level Up,Knows Twin Beam
+983,kingambit,bisharp,Three Defeated Bisharp,Three Defeated Bisharp
+984,great-tusk,,,
+985,scream-tail,,,
+986,brute-bonnet,,,
+987,flutter-mane,,,
+988,slither-wing,,,
+989,sandy-shocks,,,
+990,iron-treads,,,
+991,iron-bundle,,,
+992,iron-hands,,,
+993,iron-jugulis,,,
+994,iron-moth,,,
+995,iron-thorns,,,
+996,frigibax,,,
+997,arctibax,frigibax,Level Up,Level 35
+998,baxcalibur,arctibax,Level Up,Level 54
+999,gimmighoul,,,
+1000,gholdengo,gimmighoul,Gimmighoul Coins,Gimmighoul Coins
+1001,wo-chien,,,
+1002,chien-pao,,,
+1003,ting-lu,,,
+1004,chi-yu,,,
+1005,roaring-moon,,,
+1006,iron-valiant,,,
+1007,koraidon,,,
+1008,miraidon,,,
+1009,walking-wake,,,
+1010,iron-leaves,,,
+1011,dipplin,applin,Use Item,Syrupy Apple
+1012,poltchageist,,,
+1013,sinistcha,poltchageist,Use Item,Unremarkable Teacup
+1014,okidogi,,,
+1015,munkidori,,,
+1016,fezandipiti,,,
+1017,ogerpon,,,
+1018,archaludon,duraludon,Use Item,Metal Alloy
+1019,hydrapple,dipplin,Level Up,Knows Dragon Cheer
+1020,gouging-fire,,,
+1021,raging-bolt,,,
+1022,iron-boulder,,,
+1023,iron-crown,,,
+1024,terapagos,,,
+1025,pecharunt,,,
+,dudunsparce,dunsparce,Level Up,Knows Hyper Drill
+,deoxys,,,
+,wormadam,burmy,Level Up,"Level 20, Female only"
+,giratina,,,
+,shaymin,,,
+,basculin,,,
+,basculegion,basculin,Recoil Damage,Recoil Damage
+,darmanitan,darumaka,Level Up,Level 35
+,frillish,,,
+,jellicent,frillish,Level Up,Level 40
+,tornadus,,,
+,thundurus,,,
+,landorus,,,
+,keldeo,,,
+,meloetta,,,
+,pyroar,litleo,Level Up,Level 35
+,meowstic,espurr,Level Up,Level 25
+,aegislash,doublade,Use Item,Dusk Stone
+,pumpkaboo,,,
+,gourgeist,pumpkaboo,Trade,Trade
+,zygarde,,,
+,oricorio,,,
+,lycanroc,rockruff,Level Up,"Level 25, Day"
+,wishiwashi,,,
+,minior,,,
+,mimikyu,,,
+,toxtricity,toxel,Level Up,Level 30
+,eiscue,,,
+,indeedee,,,
+,morpeko,,,
+,urshifu,kubfu,Tower Of Darkness,Tower Of Darkness
+,enamorus,,,
+,oinkologne,lechonk,Level Up,Level 18
+,maushold,tandemaus,Other,Other
+,squawkabilly,,,
+,palafin,finizen,Level Up,Level 38
+,tatsugiri,,,
