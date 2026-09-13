@@ -22,6 +22,7 @@ A terminal-based Pokédex built with Python and Rich. Explore 1025 Pokémon with
 
 ```bash
 uv sync
+uv run init.py      # one-time: extract sprite thumbnails from thumbnails.zip
 uv run src/main.py
 ```
 
@@ -33,4 +34,4 @@ Requires **Python 3.14+**.
 - `pokemon-data/abilities.csv` — 311 battle abilities with flavor text
 - `pokemon-data/pokemon_type_chart.csv` — Full 18×18 type effectiveness matrix
 - `pokemon-data/evolutions.csv` — Flat evolution edges: `name`, `evolves_from`, trigger, and condition
-- `pokemon-images/thumbnails/` — Sprite PNGs rendered in-terminal via `rich-pixels`
+- `pokemon-images/thumbnails.zip` — All 1026 sprite PNGs in one file; `init.py` extracts them to `thumbnails/`. Sprites are optional — the app warns and falls back to ASCII art without them, and the zip can be downloaded on its own.

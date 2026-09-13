@@ -9,6 +9,7 @@ ABILITIES_CSV_PATH = BASE_PATH / "pokemon-data/abilities.csv"
 TYPE_CHART_CSV_PATH = BASE_PATH / "pokemon-data/pokemon_type_chart.csv"
 EVOLUTIONS_CSV_PATH = BASE_PATH / "pokemon-data/evolutions.csv"
 BASE_IMAGES_PATH = BASE_PATH / "pokemon-images/thumbnails/"
+SPRITES_AVAILABLE = (BASE_IMAGES_PATH / "0001.png").exists()
 
 df = pd.read_csv(CSV_PATH)
 abilities_df = pd.read_csv(ABILITIES_CSV_PATH)

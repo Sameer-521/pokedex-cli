@@ -1,7 +1,8 @@
 import sys
 from enum import Enum
 
-from cmdline import get_prompt, print_banner
+from cmdline import console, get_prompt, print_banner
+from data import SPRITES_AVAILABLE
 from handlers import (
     display_help,
     handle_abilities,
@@ -68,6 +69,10 @@ def repl() -> None:
 
 def main() -> None:
     print_banner()
+    if not SPRITES_AVAILABLE:
+        console.print(
+            "[yellow]Sprites not found. Run 'uv run init.py' to extract them.[/yellow]"
+        )
     repl()
 
 

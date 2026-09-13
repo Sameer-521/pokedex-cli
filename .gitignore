@@ -11,3 +11,6 @@ wheels/
 
 TODO*
 test*
+
+# extracted sprites (init.py)
+pokemon-images/thumbnails/
