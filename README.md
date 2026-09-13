@@ -1,6 +1,10 @@
 # Pokédex CLI
 
+![Pokédex CLI banner](example-images/pokedex-banner.png)
+
 A terminal-based Pokédex built with Python and Rich. Explore 1025 Pokémon with sprite rendering, stat visualizations, type charts, and more — all from your command line.
+
+![/info pikachu — full dashboard with sprite, stat bars, and description](example-images/pikachu-example.png)
 
 > **Important:** This version uses `rich-pixels` for sprite rendering and side-by-side dashboard layouts. Small terminal windows are not supported. Run in **full-screen mode** for the best experience.
 
