@@ -38,19 +38,19 @@ def repl() -> None:
             continue
         parts = text.split()
         cmd = parts[0].lower()
-        rem = parts[1:]
+        args = parts[1:]
 
         match cmd:
             case Action.GET_INFO.value:
-                handle_info(rem)
+                handle_info(args)
             case Action.GET_INFO_BY_ID.value:
-                handle_info_by_id(rem)
+                handle_info_by_id(args)
             case Action.COMPARE.value:
-                handle_cmp(rem)
+                handle_cmp(args)
             case Action.LIST_ALL_ABILITIES.value:
                 handle_abilities()
             case Action.GET_ABILITY_INFO.value:
-                handle_ability(rem)
+                handle_ability(args)
             case Action.TYPE_MATCHUP.value:
                 handle_type_matchup()
             case Action.CLEAR_SCREEN.value:
@@ -58,9 +58,9 @@ def repl() -> None:
             case Action.DISPLAY_HELP.value:
                 display_help()
             case Action.GET_EVOLUTION.value:
-                handle_evo(rem)
+                handle_evo(args)
             case Action.LIST_TYPE.value:
-                handle_list(rem)
+                handle_list(args)
             case Action.EXIT.value | Action.QUIT.value:
                 break
             case _:

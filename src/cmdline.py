@@ -277,15 +277,15 @@ def print_abilities(abilities: list[dict]) -> None:
         expand=False,
     )
 
-    for c in range(num_cols):
-        start_id = c * rows_per_col + 1
-        end_id = (c + 1) * rows_per_col
+    for col in range(num_cols):
+        start_id = col * rows_per_col + 1
+        end_id = (col + 1) * rows_per_col
         table.add_column(f"[bold]{start_id}-{end_id}[/bold]", no_wrap=True, width=20)
 
-    for r in range(rows_per_col):
+    for row_index in range(rows_per_col):
         row_cells = []
-        for c in range(num_cols):
-            idx = c * rows_per_col + r
+        for col in range(num_cols):
+            idx = col * rows_per_col + row_index
             if idx < len(abilities):
                 entry = abilities[idx]
                 row_cells.append(f"{entry['id']} {entry['name']}")
@@ -297,7 +297,7 @@ def print_abilities(abilities: list[dict]) -> None:
 
 
 def print_ability_info(ability: dict, have_ability: list[str]) -> None:
-    id = ability.get("id", "???")
+    ability_id = ability.get("id", "???")
     raw_name = ability.get("name", "???")
     name = raw_name.replace("-", " ").title()
     desc = ability.get("description", "???")
@@ -310,9 +310,9 @@ def print_ability_info(ability: dict, have_ability: list[str]) -> None:
     for _ in range(grid_cols):
         pokemon_grid.add_column(no_wrap=True)
 
-    for i in range(0, len(pokemon_names), grid_cols):
-        chunk = pokemon_names[i : i + grid_cols]
-        row = [n.replace("-", " ").title() for n in chunk]
+    for index in range(0, len(pokemon_names), grid_cols):
+        chunk = pokemon_names[index : index + grid_cols]
+        row = [owner.replace("-", " ").title() for owner in chunk]
         while len(row) < grid_cols:
             row.append("")
         pokemon_grid.add_row(*row)
@@ -325,7 +325,7 @@ def print_ability_info(ability: dict, have_ability: list[str]) -> None:
 
     panel = Panel(
         content,
-        title=f"[bold]ABILITY: {id} — {name}[/bold]",
+        title=f"[bold]ABILITY: {ability_id} — {name}[/bold]",
         expand=False,
     )
     console.print(panel)
@@ -345,8 +345,8 @@ def _build_effectiveness_text(type_chart_df: pd.DataFrame) -> Text:
         atk_emoji = _to_emoji(row.iloc[0])
         row_text = Text(f"{atk_emoji} ")
         for val in row.iloc[1:]:
-            v = float(val)
-            style = EFFECTIVENESS_STYLE.get(v, "")
+            effectiveness = float(val)
+            style = EFFECTIVENESS_STYLE.get(effectiveness, "")
             row_text.append("  ", style=style)
         result.append(row_text)
         result.append("\n")
@@ -468,12 +468,12 @@ def print_pokemon_list(pokemons: list[dict]) -> None:
         table.add_column("Type", no_wrap=True)
         table.add_column("Gen", justify="center", no_wrap=True)
 
-        for p in page:
+        for pokemon in page:
             table.add_row(
-                str(p["pokedex_id"]),
-                str(p["name"]).replace("-", " ").title(),
-                _format_types(p),
-                str(p.get("generation", "")),
+                str(pokemon["pokedex_id"]),
+                str(pokemon["name"]).replace("-", " ").title(),
+                _format_types(pokemon),
+                str(pokemon.get("generation", "")),
             )
 
         console.print(table)

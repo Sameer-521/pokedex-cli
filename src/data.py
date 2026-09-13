@@ -23,23 +23,25 @@ ABILITIES = abilities_df["name"].to_list()
 MAX_POKEDEX_ID = int(df["pokedex_id"].max())
 
 records: list[dict] = df.to_dict(orient="records")
-pokemon_by_name: dict[str, dict] = {r["name"]: r for r in records}
-pokemon_by_id: dict[int, dict] = {int(r["pokedex_id"]): r for r in records}
+pokemon_by_name: dict[str, dict] = {pokemon["name"]: pokemon for pokemon in records}
+pokemon_by_id: dict[int, dict] = {
+    int(pokemon["pokedex_id"]): pokemon for pokemon in records
+}
 
 ability_by_name: dict[str, dict] = {
-    r["name"]: r for r in abilities_df.to_dict(orient="records")
+    ability["name"]: ability for ability in abilities_df.to_dict(orient="records")
 }
 
 by_type: dict[str, list[dict]] = {}
 ability_owners: dict[str, list[str]] = {}
-for r in records:
-    for t in (r["type_1"], r["type_2"]):
-        if pd.notna(t):
-            by_type.setdefault(t, []).append(r)
-    for col in ("ability_1", "ability_2", "hidden_ability"):
-        a = r[col]
-        if pd.notna(a):
-            ability_owners.setdefault(a, []).append(r["name"])
+for pokemon in records:
+    for pokemon_type in (pokemon["type_1"], pokemon["type_2"]):
+        if pd.notna(pokemon_type):
+            by_type.setdefault(pokemon_type, []).append(pokemon)
+    for ability_column in ("ability_1", "ability_2", "hidden_ability"):
+        ability = pokemon[ability_column]
+        if pd.notna(ability):
+            ability_owners.setdefault(ability, []).append(pokemon["name"])
 
 # evolution edges from the flat csv (one row per edge: evolves_from -> name)
 evolutions_df = pd.read_csv(EVOLUTIONS_CSV_PATH)
@@ -47,10 +49,16 @@ evolutions_df = pd.read_csv(EVOLUTIONS_CSV_PATH)
 # form pokemon are dumped under their plain name with a blank pokedex_id
 # (e.g. 'eiscue' instead of 'eiscue-ice'); resolve them to dataset names
 _alias: dict[str, str] = {}
-for name in evolutions_df.loc[evolutions_df["pokedex_id"].isna(), "name"].unique():
-    matches = [n for n in pokemon_names if n.startswith(name + "-")]
+for plain_name in evolutions_df.loc[
+    evolutions_df["pokedex_id"].isna(), "name"
+].unique():
+    matches = [
+        dataset_name
+        for dataset_name in pokemon_names
+        if dataset_name.startswith(plain_name + "-")
+    ]
     if len(matches) == 1:
-        _alias[name] = matches[0]
+        _alias[plain_name] = matches[0]
 
 evolves_to: dict[str, list[tuple[str, str]]] = {}
 evolves_from: dict[str, tuple[str, str]] = {}

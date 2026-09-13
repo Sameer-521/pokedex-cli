@@ -64,14 +64,14 @@ def display_help() -> None:
     )
 
 
-def handle_info(rem: list[str]) -> None:
-    if len(rem) == 0:
+def handle_info(args: list[str]) -> None:
+    if len(args) == 0:
         print("Please specify pokemon(s) name(s)")
         return
-    invalid_names = {name for name in rem if name not in pokemon_names}
+    invalid_names = {name for name in args if name not in pokemon_names}
     if invalid_names:
         print(f"Invalid names: {invalid_names}")
-    for name in set(rem) - invalid_names:
+    for name in set(args) - invalid_names:
         pokemon_info = pokemon_by_name[name]
         img_path = BASE_IMAGES_PATH / (
             str(pokemon_info["pokedex_id"]).zfill(4) + ".png"
@@ -79,36 +79,36 @@ def handle_info(rem: list[str]) -> None:
         print_dashboard(img_path, pokemon_info)
 
 
-def handle_info_by_id(rem: list[str]) -> None:
-    if len(rem) == 0:
+def handle_info_by_id(args: list[str]) -> None:
+    if len(args) == 0:
         print("Please enter a valid pokemon ID")
         return
     valid_ids: set[int] = set()
     invalid: list[str] = []
-    for token in rem:
+    for token in args:
         try:
-            pid = int(token)
+            pokedex_id = int(token)
         except ValueError:
             invalid.append(token)
             continue
-        if 1 <= pid <= MAX_POKEDEX_ID:
-            valid_ids.add(pid)
+        if 1 <= pokedex_id <= MAX_POKEDEX_ID:
+            valid_ids.add(pokedex_id)
         else:
             invalid.append(token)
     if invalid:
         print(f"Invalid IDs: {invalid}")
-    for pid in sorted(valid_ids):
-        pokemon_info = pokemon_by_id[pid]
-        img_path = BASE_IMAGES_PATH / (str(pid).zfill(4) + ".png")
+    for pokedex_id in sorted(valid_ids):
+        pokemon_info = pokemon_by_id[pokedex_id]
+        img_path = BASE_IMAGES_PATH / (str(pokedex_id).zfill(4) + ".png")
         print_dashboard(img_path, pokemon_info)
 
 
-def handle_cmp(rem: list[str]) -> None:
-    if len(rem) < 2:
+def handle_cmp(args: list[str]) -> None:
+    if len(args) < 2:
         print("Please enter two pokemon names")
         return
-    pokemon_a, pokemon_b = rem[0].lower(), rem[1].lower()
-    invalid = [n for n in (pokemon_a, pokemon_b) if n not in pokemon_names]
+    pokemon_a, pokemon_b = args[0].lower(), args[1].lower()
+    invalid = [name for name in (pokemon_a, pokemon_b) if name not in pokemon_names]
     if invalid:
         print(f"Invalid pokemon name(s): {invalid}")
         return
@@ -119,14 +119,14 @@ def handle_abilities() -> None:
     print_abilities(abilities_df[["id", "name"]].to_dict(orient="records"))
 
 
-def handle_ability(rem: list[str]) -> None:
-    if len(rem) == 0:
+def handle_ability(args: list[str]) -> None:
+    if len(args) == 0:
         print("Please specify ability.")
         return
-    if len(rem) > 1:
+    if len(args) > 1:
         print("You can only view info for one ability at a time.")
         return
-    ability = rem[0]
+    ability = args[0]
     if ability not in ability_by_name:
         print(f"Invalid ability: {ability}")
         return
@@ -147,20 +147,20 @@ def _chain_lines(root: str, target: str) -> list[str]:
         name, path = stack.pop()
         children = evolves_to.get(name)
         if not children:
-            lines.append(" → ".join(label(p) for p in path))
+            lines.append(" → ".join(label(chain_name) for chain_name in path))
             continue
         for child, _ in reversed(children):
             stack.append((child, [*path, child]))
     return lines
 
 
-def handle_evo(rem: list[str]) -> None:
-    if len(rem) == 0:
+def handle_evo(args: list[str]) -> None:
+    if len(args) == 0:
         print("Please specify a pokemon name")
         return
-    name = rem[0].lower()
+    name = args[0].lower()
     if name not in pokemon_names:
-        print(f"Invalid pokemon name: {rem[0]}")
+        print(f"Invalid pokemon name: {args[0]}")
         return
 
     parent = evolves_from.get(name)
@@ -175,21 +175,27 @@ def handle_evo(rem: list[str]) -> None:
 
     conditions: list[str] = []
     if parent is not None:
-        src, cond = parent
-        conditions.append(f"{src} → {name}: {cond}" if cond else f"{src} → {name}")
-    for child, cond in children:
-        conditions.append(f"{name} → {child}: {cond}" if cond else f"{name} → {child}")
+        parent_name, condition = parent
+        conditions.append(
+            f"{parent_name} → {name}: {condition}"
+            if condition
+            else f"{parent_name} → {name}"
+        )
+    for child, condition in children:
+        conditions.append(
+            f"{name} → {child}: {condition}" if condition else f"{name} → {child}"
+        )
 
     pokedex_id = pokemon_by_name[name]["pokedex_id"]
     print_evolution_info(pokedex_id, name, _chain_lines(root, name), conditions)
 
 
-def handle_list(rem: list[str]) -> None:
-    if rem:
-        pokemon_type = rem[0].lower()
+def handle_list(args: list[str]) -> None:
+    if args:
+        pokemon_type = args[0].lower()
         pokemons = by_type.get(pokemon_type)
         if pokemons is None:
-            print(f"Invalid type: {rem[0]}")
+            print(f"Invalid type: {args[0]}")
             print(f"Valid types: {', '.join(sorted(by_type))}")
             return
     else:
