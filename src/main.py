@@ -1,38 +1,18 @@
-import json
-import subprocess
 import sys
-import os
-import pandas as pd
-from cmdline import (
-    print_abilities,
-    print_comparison,
-    print_dashboard,
-    print_banner,
-    get_prompt,
-    print_ability_info,
-    print_type_map,
-)
-from handlers import display_help, handle_evo
 from enum import Enum
-from pathlib import Path
 
-BASE_PATH = Path(__file__).resolve().parent.parent
-
-CSV_PATH = BASE_PATH / "pokemon-data/pokemon_complete_2025.csv"
-ABILITIES_CSV_PATH = BASE_PATH / "pokemon-data/abilities.csv"
-TYPE_CHART_CSV_PATH = BASE_PATH / "pokemon-data/pokemon_type_chart.csv"
-EVO_JSON_PATH = BASE_PATH / "pokemon-data/Pokemon-evolution.json"
-BASE_IMAGES_PATH = BASE_PATH / "pokemon-images/thumbnails/"
-
-df = pd.read_csv(CSV_PATH)
-abilities_df = pd.read_csv(ABILITIES_CSV_PATH)[:311]
-type_chart_df = pd.read_csv(TYPE_CHART_CSV_PATH)
-
-with open(EVO_JSON_PATH, "r", encoding="utf-8") as f:
-    evo_data = json.load(f)
-
-pokemon_names = df["name"].to_list()
-ABILITIES = abilities_df["name"].to_list()  # type: ignore
+from cmdline import get_prompt, print_banner
+from handlers import (
+    display_help,
+    handle_abilities,
+    handle_ability,
+    handle_cmp,
+    handle_evo,
+    handle_info,
+    handle_info_by_id,
+    handle_list,
+    handle_type_matchup,
+)
 
 
 class Action(Enum):
@@ -45,6 +25,9 @@ class Action(Enum):
     TYPE_MATCHUP = "/type-matchup"
     DISPLAY_HELP = "/help"
     GET_EVOLUTION = "/evo"
+    LIST_TYPE = "/list"
+    EXIT = "/exit"
+    QUIT = "/quit"
 
 
 def repl() -> None:
@@ -58,94 +41,27 @@ def repl() -> None:
 
         match cmd:
             case Action.GET_INFO.value:
-                if len(rem) == 0:
-                    print("Please specify pokemon(s) name(s)")
-                    continue
-                invalid_names = {name for name in rem if name not in pokemon_names}
-                valid = set(rem) - invalid_names
-                if len(valid) == 0:
-                    print(f"Invalid names: {invalid_names}")
-                    continue
-                for name in valid:  # pandas will look for this variable
-                    matching_entry = df.query("name == @name")
-                    pokemon_info = matching_entry.iloc[0].to_dict()
-                    img_path = BASE_IMAGES_PATH / (
-                        str(pokemon_info["pokedex_id"]).zfill(4) + ".png"
-                    )
-                    print_dashboard(img_path.absolute(), pokemon_info)
-
+                handle_info(rem)
             case Action.GET_INFO_BY_ID.value:
-                if len(rem) == 0:
-                    print("Please enter a valid pokemon ID")
-                    continue
-                try:
-                    valid_ids = {
-                        id for id in rem if (int(id) > 0) and (int(id) <= 1025)
-                    }
-                except ValueError as e:
-                    print(f"Error: {e}")
-                    continue
-
-                invalid = set(rem) - valid_ids
-
-                for id in valid_ids:
-                    matching_entry = df.query(f"pokedex_id == {id}")
-                    pokemon_info = matching_entry.iloc[0].to_dict()
-                    img_path = BASE_IMAGES_PATH / (id.zfill(4) + ".png")
-                    print_dashboard(img_path, pokemon_info)
-
-                if invalid:
-                    print(f"Invalid IDs: {invalid}")
+                handle_info_by_id(rem)
             case Action.COMPARE.value:
-                if len(rem) < 2:
-                    print("Please enter two pokemon names")
-                    continue
-                pokemon_a, pokemon_b = list(map(lambda x: x.lower(), rem[0:2]))
-                invalid = [
-                    pk for pk in [pokemon_a, pokemon_b] if pk not in pokemon_names
-                ]
-                if invalid:
-                    print(f"Invalid pokemon name(s): {invalid}")
-                    continue
-                a_info = df.query("name == @pokemon_a").iloc[0].to_dict()
-                b_info = df.query("name == @pokemon_b").iloc[0].to_dict()
-                print_comparison(a_info, b_info)
-
+                handle_cmp(rem)
             case Action.LIST_ALL_ABILITIES.value:
-                abilities = abilities_df[["id", "name"]].to_dict(orient="records")  # type: ignore
-                print_abilities(abilities)
+                handle_abilities()
             case Action.GET_ABILITY_INFO.value:
-                if len(rem) == 0:
-                    print("Please specify ability.")
-                    continue
-                if len(rem) > 1:
-                    print("You can only view info for one ability at a time.")
-                    continue
-                ability = rem[0]
-                if ability not in ABILITIES:
-                    print(f"Invalid ability: {ability}")
-                    continue
-                have_ability = df.query(
-                    "ability_1 == @ability or ability_2 == @ability or hidden_ability == @ability"
-                )["name"].to_dict()
-
-                ability_entry = abilities_df.query("name == @ability").iloc[0].to_dict()
-                print_ability_info(ability_entry, have_ability)
+                handle_ability(rem)
             case Action.TYPE_MATCHUP.value:
-                print_type_map(type_chart_df)
+                handle_type_matchup()
             case Action.CLEAR_SCREEN.value:
-                subprocess.run(["clear"] if os.name == "posix" else ["cls"])
+                print("\033[2J\033[H", end="")
             case Action.DISPLAY_HELP.value:
                 display_help()
             case Action.GET_EVOLUTION.value:
-                if len(rem) == 0:
-                    print("Please specify a pokemon name")
-                    continue
-                name = rem[0].lower()
-                if name not in pokemon_names:
-                    print(f"Invalid pokemon name: {rem[0]}")
-                    continue
-                handle_evo(name, df, evo_data)
+                handle_evo(rem)
+            case Action.LIST_TYPE.value:
+                handle_list(rem)
+            case Action.EXIT.value | Action.QUIT.value:
+                break
             case _:
                 print(f"Invalid command: {cmd}")
 

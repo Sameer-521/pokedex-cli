@@ -1,12 +1,12 @@
-import pandas as pd
-import plotext as plt
-from PIL import Image
-from rich_pixels import Pixels
 from pathlib import Path
+
+import pandas as pd
+from PIL import Image
 from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
 from rich.text import Text
+from rich_pixels import Pixels
 
 console = Console()
 WIDTH = 50
@@ -26,8 +26,6 @@ banner_text = (
 UNAVAILABLE = (
     "██████╗\n ██╔═══██╗\n ╚═╝  ██╔╝\n    ██╔═╝\n   ██╔╝\n   ╚═╝\n\n   ██╗\n   ╚═╝"
 )
-
-TYPE_CHART_CSV_PATH = "pokemon_type_chart.csv"
 
 ABBR_TO_FULL = {
     "NOR": "Normal",
@@ -50,8 +48,6 @@ ABBR_TO_FULL = {
     "FAI": "Fairy",
 }
 
-FULL_TO_ABBR = {v: k for k, v in ABBR_TO_FULL.items()}
-
 EMOJI_BY_TYPE = {
     "Normal": "⚪",
     "Fire": "🔥",
@@ -73,12 +69,6 @@ EMOJI_BY_TYPE = {
     "Fairy": "🧚",
 }
 
-EFFECTIVENESS_STYLE = {
-    2.0: "on green4",
-    1.0: "on grey35",
-    0.5: "on dark_red",
-    0.0: "on grey7",
-}
 EFFECTIVENESS_STYLE = {
     2.0: "on green",
     1.0: "on white",
@@ -136,20 +126,19 @@ def generate_progress_bar(ratio: float, width: int = 20) -> str:
 def generate_image_widget(image_path: Path, img_size: tuple = IMG_SIZE) -> Pixels:
     """Generates the high-density Braille string from Plotext."""
     try:
-        plt.image_plot(image_path)
         img = Image.open(image_path).resize(img_size)
         pixels = Pixels.from_image(img)
 
         return pixels
     except ModuleNotFoundError:
         console.print("[yellow]Warning:[/yellow] Pillow is not installed")
-        return Pixels.from_ascii((UNAVAILABLE))
+        return Pixels.from_ascii(UNAVAILABLE)
     except FileNotFoundError:
         console.print("[yellow]Warning:[/yellow] Image file not found")
-        return Pixels.from_ascii((UNAVAILABLE))
+        return Pixels.from_ascii(UNAVAILABLE)
     except Exception as e:
         console.print(f"[red]Error in {generate_image_widget.__name__}:[/red] {e}")
-        return Pixels.from_ascii((UNAVAILABLE))
+        return Pixels.from_ascii(UNAVAILABLE)
 
 
 def extract_extra_text(poke_data: dict) -> str:
@@ -161,14 +150,14 @@ def extract_extra_text(poke_data: dict) -> str:
         ratio = min(max(val / max_val, 0.0), 1.0)
         return f"{int(val)} {generate_progress_bar(ratio)}"
 
+    type_2 = str(poke_data.get("type_2", "")).strip()
+    if type_2.lower() == "nan":
+        type_2 = ""
+
     extra_text = (
         f"[bold magenta]No. {poke_data.get('pokedex_id', '???')} — {poke_data.get('genus', 'Unknown')}[/bold magenta]\n"
         f"[bold]Type:[/bold] {poke_data.get('type_1', 'Normal').title()}"
-        + (
-            f" / {poke_data.get('type_2', '').title()}"
-            if poke_data.get("type_2")
-            else ""
-        )
+        + (f" / {type_2.title()}" if type_2 else "")
         + "\n"
         f"[bold]HT:[/bold] {poke_data.get('height_m', '0')}m  |  [bold]WT:[/bold] {poke_data.get('weight_kg', '0')}kg\n"
         f"[bold]Ability:[/bold] {poke_data.get('ability_1', 'None').replace('-', ' ').title()}\n"
@@ -307,13 +296,13 @@ def print_abilities(abilities: list[dict]) -> None:
     console.print(table)
 
 
-def print_ability_info(ability: dict, have_ability: dict) -> None:
+def print_ability_info(ability: dict, have_ability: list[str]) -> None:
     id = ability.get("id", "???")
     raw_name = ability.get("name", "???")
     name = raw_name.replace("-", " ").title()
     desc = ability.get("description", "???")
 
-    pokemon_names = list(have_ability.values())
+    pokemon_names = have_ability
     count = len(pokemon_names)
 
     grid_cols = 3
@@ -425,7 +414,7 @@ def print_evolution_info(
     content.append("\n\n")
 
     content.append("Evolution chain:\n", style="bold")
-    chain_text = "\n".join(chain_lines)
+    chain_text = "\n  ".join(chain_lines)
     content.append(Text.from_markup(f"  {chain_text}"))
 
     if conditions:
@@ -440,3 +429,55 @@ def print_evolution_info(
         expand=False,
     )
     console.print(panel)
+
+
+PAGE_SIZE = 25
+
+
+def _format_types(row: dict) -> str:
+    parts: list[str] = []
+    for key in ("type_1", "type_2"):
+        value = row.get(key)
+        if pd.isna(value):
+            continue
+        type_name = str(value).title()
+        emoji = EMOJI_BY_TYPE.get(type_name)
+        parts.append(f"{emoji} {type_name}" if emoji else type_name)
+    return " / ".join(parts)
+
+
+def print_pokemon_list(pokemons: list[dict]) -> None:
+    total = len(pokemons)
+    if total == 0:
+        console.print("[yellow]No Pokémon found.[/yellow]")
+        return
+
+    console.print(f"[bold]{total} Pokémon found[/bold]")
+
+    for start in range(0, total, PAGE_SIZE):
+        page = pokemons[start : start + PAGE_SIZE]
+        table = Table(
+            title=(
+                f"[bold]POKÉMON {start + 1}–{min(start + PAGE_SIZE, total)} "
+                f"OF {total}[/bold]"
+            ),
+            expand=False,
+        )
+        table.add_column("No.", justify="right", style="cyan", no_wrap=True)
+        table.add_column("Name", style="bold", no_wrap=True)
+        table.add_column("Type", no_wrap=True)
+        table.add_column("Gen", justify="center", no_wrap=True)
+
+        for p in page:
+            table.add_row(
+                str(p["pokedex_id"]),
+                str(p["name"]).replace("-", " ").title(),
+                _format_types(p),
+                str(p.get("generation", "")),
+            )
+
+        console.print(table)
+        if start + PAGE_SIZE < total:
+            answer = console.input("-- Enter for more, q to stop -- ")
+            if answer.strip().lower() in ("q", "quit"):
+                return

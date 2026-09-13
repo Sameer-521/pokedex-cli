@@ -1,7 +1,31 @@
 from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
-import re
+
+from cmdline import (
+    print_abilities,
+    print_ability_info,
+    print_comparison,
+    print_dashboard,
+    print_evolution_info,
+    print_pokemon_list,
+    print_type_map,
+)
+from data import (
+    BASE_IMAGES_PATH,
+    MAX_POKEDEX_ID,
+    abilities_df,
+    ability_by_name,
+    ability_owners,
+    by_type,
+    evolves_from,
+    evolves_to,
+    pokemon_by_id,
+    pokemon_by_name,
+    pokemon_names,
+    records,
+    type_chart_df,
+)
 
 console = Console()
 
@@ -16,29 +40,11 @@ COMMANDS = [
     ("/ability <name>", "Show ability description and Pokémon that have it"),
     ("/type-matchup", "Display the full 18×18 type effectiveness chart"),
     ("/evo <name>", "Show evolution chain and conditions for a Pokémon"),
+    ("/list [type]", "List Pokémon, optionally filtered by type"),
     ("/clear", "Clear the terminal screen"),
     ("/help", "Show this help message"),
+    ("/exit, /quit", "Leave the Pokédex"),
 ]
-
-
-def _strip_markup(text: str) -> str:
-    return re.sub(r"\[.*?\]", "", text)
-
-
-_JSON_TO_CSV: dict[str, str] = {
-    "farfetch\u2019d": "farfetchd",
-    "nidoran\u2640": "nidoran-f",
-    "nidoran\u2642": "nidoran-m",
-    "mr. mime": "mr-mime",
-    "mime jr.": "mime-jr",
-    "type: null": "type-null",
-}
-
-_CSV_TO_JSON: dict[str, str] = {v: k for k, v in _JSON_TO_CSV.items()}
-
-
-def _norm_name(name: str) -> str:
-    return _JSON_TO_CSV.get(name, name)
 
 
 def display_help() -> None:
@@ -58,238 +64,134 @@ def display_help() -> None:
     )
 
 
-def _format_condition(evo_details: dict) -> str:
-    if not evo_details:
-        return ""
-
-    parts: list[str] = []
-
-    if "candy_required" in evo_details:
-        parts.append(f"{evo_details['candy_required']} Candy")
-
-    if "item_required" in evo_details:
-        parts.append(evo_details["item_required"])
-
-    if evo_details.get("gender_required") == "Male":
-        parts.append("Male only")
-    elif evo_details.get("gender_required") == "Female":
-        parts.append("Female only")
-
-    if evo_details.get("only_evolves_in_daytime"):
-        parts.append("Daytime only")
-    if evo_details.get("only_evolves_in_nighttime"):
-        parts.append("Nighttime only")
-
-    if evo_details.get("must_be_buddy_to_evolve"):
-        dist = evo_details.get("buddy_distance_required")
-        if dist:
-            parts.append(f"Walk {dist}km as buddy")
-        else:
-            parts.append("Walk as buddy")
-
-    if "lure_required" in evo_details:
-        parts.append(evo_details["lure_required"])
-
-    if evo_details.get("no_candy_cost_if_traded"):
-        parts.append("No candy if traded")
-
-    if evo_details.get("upside_down"):
-        parts.append("Turn upside-down")
-
-    return ", ".join(parts) if parts else ""
+def handle_info(rem: list[str]) -> None:
+    if len(rem) == 0:
+        print("Please specify pokemon(s) name(s)")
+        return
+    invalid_names = {name for name in rem if name not in pokemon_names}
+    if invalid_names:
+        print(f"Invalid names: {invalid_names}")
+    for name in set(rem) - invalid_names:
+        pokemon_info = pokemon_by_name[name]
+        img_path = BASE_IMAGES_PATH / (
+            str(pokemon_info["pokedex_id"]).zfill(4) + ".png"
+        )
+        print_dashboard(img_path, pokemon_info)
 
 
-def _build_maps(evo_data: dict) -> tuple[dict, dict]:
-    forward_map: dict[str, list[dict]] = {}
-    backward_map: dict[str, list[tuple[str, dict]]] = {}
-    entries = evo_data["pokemon_name"]
-    evolutions = evo_data["evolutions"]
-
-    def _add(key: str):
-        if key not in forward_map:
-            forward_map[key] = []
-
-    for idx in entries:
-        source_name = entries[idx].lower()
-        src_csv = _norm_name(source_name)
-        evo_list = evolutions[idx]
-
-        if not evo_list:
+def handle_info_by_id(rem: list[str]) -> None:
+    if len(rem) == 0:
+        print("Please enter a valid pokemon ID")
+        return
+    valid_ids: set[int] = set()
+    invalid: list[str] = []
+    for token in rem:
+        try:
+            pid = int(token)
+        except ValueError:
+            invalid.append(token)
             continue
-
-        _add(source_name)
-        if src_csv != source_name:
-            _add(src_csv)
-
-        for evo in evo_list:
-            target_name = evo["pokemon_name"].lower()
-            tgt_csv = _norm_name(target_name)
-
-            existing = any(
-                e["pokemon_name"].lower() == target_name
-                for e in forward_map[source_name]
-            )
-            if not existing:
-                forward_map[source_name].append(evo)
-                if src_csv != source_name:
-                    existing_csv = any(
-                        e["pokemon_name"].lower() == target_name
-                        for e in forward_map[src_csv]
-                    )
-                    if not existing_csv:
-                        forward_map[src_csv].append(evo)
-
-            for key in {target_name, tgt_csv}:
-                if key not in backward_map:
-                    backward_map[key] = []
-                backward_map[key].append((source_name, evo))
-
-    return forward_map, backward_map
+        if 1 <= pid <= MAX_POKEDEX_ID:
+            valid_ids.add(pid)
+        else:
+            invalid.append(token)
+    if invalid:
+        print(f"Invalid IDs: {invalid}")
+    for pid in sorted(valid_ids):
+        pokemon_info = pokemon_by_id[pid]
+        img_path = BASE_IMAGES_PATH / (str(pid).zfill(4) + ".png")
+        print_dashboard(img_path, pokemon_info)
 
 
-def _find_root(name: str, backward_map: dict) -> str:
-    visited: set[str] = set()
-
-    def walk(n: str) -> str:
-        if n in visited:
-            return n
-        visited.add(n)
-        if n in backward_map:
-            return walk(backward_map[n][0][0])
-        return n
-
-    return walk(name)
+def handle_cmp(rem: list[str]) -> None:
+    if len(rem) < 2:
+        print("Please enter two pokemon names")
+        return
+    pokemon_a, pokemon_b = rem[0].lower(), rem[1].lower()
+    invalid = [n for n in (pokemon_a, pokemon_b) if n not in pokemon_names]
+    if invalid:
+        print(f"Invalid pokemon name(s): {invalid}")
+        return
+    print_comparison(pokemon_by_name[pokemon_a], pokemon_by_name[pokemon_b])
 
 
-def _build_chain_tree(root_name: str, forward_map: dict) -> dict:
-    visited: set[str] = set()
-
-    def build(name: str) -> dict:
-        if name in visited:
-            return {"name": name, "children": []}
-        visited.add(name)
-
-        children: list[dict] = []
-        if name in forward_map:
-            for evo in forward_map[name]:
-                child_name = evo["pokemon_name"].lower()
-                child_tree = build(child_name)
-                child_tree["details"] = evo
-                children.append(child_tree)
-
-        return {"name": name, "children": children}
-
-    return build(root_name)
+def handle_abilities() -> None:
+    print_abilities(abilities_df[["id", "name"]].to_dict(orient="records"))
 
 
-def _find_node(root: dict, target: str) -> dict | None:
-    if root["name"] == target:
-        return root
-    for child in root.get("children", []):
-        found = _find_node(child, target)
-        if found:
-            return found
-    return None
+def handle_ability(rem: list[str]) -> None:
+    if len(rem) == 0:
+        print("Please specify ability.")
+        return
+    if len(rem) > 1:
+        print("You can only view info for one ability at a time.")
+        return
+    ability = rem[0]
+    if ability not in ability_by_name:
+        print(f"Invalid ability: {ability}")
+        return
+    print_ability_info(ability_by_name[ability], ability_owners.get(ability, []))
 
 
-def _contains_target(node: dict, target: str) -> bool:
-    if node["name"] == target:
-        return True
-    return any(_contains_target(c, target) for c in node.get("children", []))
+def handle_type_matchup() -> None:
+    print_type_map(type_chart_df)
 
 
-def _chain_lines(
-    node: dict, target: str, depth: int = 0, prefix: str = "", sibling_indent: int = 0
-) -> list[str]:
-    name = node["name"]
-    display = f"[bold]{name.upper()}[/bold]" if name == target else name
-    children = node.get("children", [])
+def _chain_lines(root: str, target: str) -> list[str]:
+    def label(name: str) -> str:
+        return f"[bold]{name.upper()}[/bold]" if name == target else name
 
-    if not children:
-        if depth == 0:
-            return [display]
-        return [f"{prefix}{display}"]
-
-    primary = [c for c in children if _contains_target(c, target)]
-    others = [c for c in children if not _contains_target(c, target)]
-    ordered = primary + others
-
-    first = ordered[0]
-    if depth == 0:
-        my_indent = len(_strip_markup(display)) + 1
-        first_lines = _chain_lines(
-            first, target, depth + 1, f"{display} → ", sibling_indent=my_indent
-        )
-    else:
-        new_prefix = f"{prefix}{display} → "
-        my_indent = len(_strip_markup(prefix)) + len(_strip_markup(display)) + 1
-        first_lines = _chain_lines(
-            first, target, depth + 1, new_prefix, sibling_indent=my_indent
-        )
-
-    lines = list(first_lines)
-
-    for child in ordered[1:]:
-        child_name = child["name"]
-        child_display = (
-            f"[bold]{child_name.upper()}[/bold]" if child_name == target else child_name
-        )
-        si = " " * my_indent
-        lines.append(f"{si}→ {child_display}")
-
-        for gc in child.get("children", []):
-            gc_indent = my_indent + 2 + len(_strip_markup(child_display)) + 1
-            gc_lines = _chain_lines(
-                gc, target, depth + 2, f"{si}→ ", sibling_indent=gc_indent
-            )
-            lines.extend(gc_lines)
-
+    lines: list[str] = []
+    stack: list[tuple[str, list[str]]] = [(root, [root])]
+    while stack:
+        name, path = stack.pop()
+        children = evolves_to.get(name)
+        if not children:
+            lines.append(" → ".join(label(p) for p in path))
+            continue
+        for child, _ in reversed(children):
+            stack.append((child, [*path, child]))
     return lines
 
 
-def handle_evo(name: str, df, evo_data: dict) -> None:
-    from cmdline import print_evolution_info
+def handle_evo(rem: list[str]) -> None:
+    if len(rem) == 0:
+        print("Please specify a pokemon name")
+        return
+    name = rem[0].lower()
+    if name not in pokemon_names:
+        print(f"Invalid pokemon name: {rem[0]}")
+        return
 
-    forward_map, backward_map = _build_maps(evo_data)
-
-    lookup_names = {name}
-    if name in _CSV_TO_JSON:
-        lookup_names.add(_CSV_TO_JSON[name])
-
-    found = False
-    for n in lookup_names:
-        if n in forward_map or n in backward_map:
-            found = True
-            break
-
-    if not found:
+    parent = evolves_from.get(name)
+    children = evolves_to.get(name, [])
+    if parent is None and not children:
         console.print(f"[yellow]No evolution data found for '{name}'.[/yellow]")
         return
 
-    root_name = _find_root(name, backward_map)
-    root = _build_chain_tree(root_name, forward_map)
-
-    chain_lines = _chain_lines(root, name)
+    root = name
+    while root in evolves_from:
+        root = evolves_from[root][0]
 
     conditions: list[str] = []
-    for n in lookup_names:
-        if n in backward_map:
-            for src_name, evo in backward_map[n]:
-                cond = _format_condition(evo)
-                conditions.append(f"{src_name} → {n}: {cond}")
-            break
+    if parent is not None:
+        src, cond = parent
+        conditions.append(f"{src} → {name}: {cond}" if cond else f"{src} → {name}")
+    for child, cond in children:
+        conditions.append(f"{name} → {child}: {cond}" if cond else f"{name} → {child}")
 
-    for n in lookup_names:
-        if n in forward_map:
-            for evo in forward_map[n]:
-                tgt_name = evo["pokemon_name"].lower()
-                cond = _format_condition(evo)
-                conditions.append(f"{n} → {tgt_name}: {cond}")
-            break
+    pokedex_id = pokemon_by_name[name]["pokedex_id"]
+    print_evolution_info(pokedex_id, name, _chain_lines(root, name), conditions)
 
-    matching = df.query("name == @name")
-    pokedex_id: str | int = ""
-    if not matching.empty:
-        pokedex_id = matching.iloc[0]["pokedex_id"]
 
-    print_evolution_info(pokedex_id, name, chain_lines, conditions)
+def handle_list(rem: list[str]) -> None:
+    if rem:
+        pokemon_type = rem[0].lower()
+        pokemons = by_type.get(pokemon_type)
+        if pokemons is None:
+            print(f"Invalid type: {rem[0]}")
+            print(f"Valid types: {', '.join(sorted(by_type))}")
+            return
+    else:
+        pokemons = records
+    print_pokemon_list(pokemons)

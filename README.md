@@ -12,14 +12,17 @@ A terminal-based Pokédex built with Python and Rich. Explore 1025 Pokémon with
 - **`/abilities`** — Paginated 6-column table listing all 311 abilities with their IDs.
 - **`/ability <name>`** — Ability description plus a grid of all Pokémon that have the ability.
 - **`/type-matchup`** — Full 18×18 type effectiveness heatmap with colored blocks and a type/legend key.
+- **`/evo <name>`** — Evolution chain with conditions (level, stone, trade, happiness).
+- **`/list [type]`** — Paginated table of Pokémon, optionally filtered by type.
 - **`/clear`** — Clears the terminal screen.
 - **`/help`** — Displays all available commands.
+- **`/exit` / `/quit`** — Leaves the Pokédex.
 
 ## Setup
 
 ```bash
 uv sync
-uv run main.py
+uv run src/main.py
 ```
 
 Requires **Python 3.14+**.
@@ -27,6 +30,7 @@ Requires **Python 3.14+**.
 ## Data
 
 - `pokemon-data/pokemon_complete_2025.csv` — 1025 Pokémon with stats, types, abilities, and descriptions
-- `pokemon-data/abilities.csv` — 372 abilities with flavor text
+- `pokemon-data/abilities.csv` — 311 battle abilities with flavor text
 - `pokemon-data/pokemon_type_chart.csv` — Full 18×18 type effectiveness matrix
+- `pokemon-data/evolutions.csv` — Flat evolution edges: `name`, `evolves_from`, trigger, and condition
 - `pokemon-images/thumbnails/` — Sprite PNGs rendered in-terminal via `rich-pixels`
